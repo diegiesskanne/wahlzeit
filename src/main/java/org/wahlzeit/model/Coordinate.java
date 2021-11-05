@@ -9,7 +9,7 @@ public class Coordinate{
     private double z;
 
     // may be discarded
-    public Location location;
+    private Location location;
 
     public Coordinate(double x, double y, double z){
         this.x = x;
@@ -39,6 +39,31 @@ public class Coordinate{
 
     public void setZ(double z) {
         this.z = z;
+    }
+
+    public Location getLocation() { return location; }
+
+    public void setLocation(Location location) { this.location = location; }
+
+    public double getDistance(Coordinate another_coordinate){
+
+        double squared_x = Math.pow((another_coordinate.x - this.x), 2);
+        double squared_y = Math.pow((another_coordinate.y - this.y), 2);
+        double squared_z = Math.pow((another_coordinate.z - this.z), 2);
+
+        return Math.sqrt(squared_x + squared_y + squared_z);
+    }
+
+    public boolean isEqual(Coordinate another_coordinate){
+        return this.x == another_coordinate.x && this.y == another_coordinate.y && this.z == another_coordinate.z;
+    }
+    @Override
+    public boolean equals(Object o){
+        if ((o instanceof Coordinate)){
+            return isEqual((Coordinate) o);
+        }else{
+            return false;
+        }
     }
 }
 

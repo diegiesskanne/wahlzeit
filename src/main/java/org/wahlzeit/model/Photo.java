@@ -89,7 +89,9 @@ public class Photo extends DataObject {
 	 */
 	protected long creationTime = System.currentTimeMillis();
 
-
+	/**
+	 *
+	 */
 	protected Location location;
 
 
@@ -152,6 +154,12 @@ public class Photo extends DataObject {
 
 		creationTime = rset.getLong("creation_time");
 
+		location = new Location(new Coordinate(
+				rset.getDouble("coordinate_x"),
+				rset.getDouble("coordinate_y"),
+				rset.getDouble("coordinate_z")
+		));
+
 		maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
 	}
 	
@@ -172,7 +180,11 @@ public class Photo extends DataObject {
 		rset.updateInt("status", status.asInt());
 		rset.updateInt("praise_sum", praiseSum);
 		rset.updateInt("no_votes", noVotes);
-		rset.updateLong("creation_time", creationTime);		
+		rset.updateLong("creation_time", creationTime);
+		rset.updateDouble("coordinate_x", location.getCoordinate().getX());
+		rset.updateDouble("coordinate_y", location.getCoordinate().getY());
+		rset.updateDouble("coordinate_z", location.getCoordinate().getZ());
+
 	}
 
 	/**
