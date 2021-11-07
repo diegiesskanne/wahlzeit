@@ -55,7 +55,11 @@ public class Coordinate{
     }
 
     public boolean isEqual(Coordinate another_coordinate){
-        return this.x == another_coordinate.x && this.y == another_coordinate.y && this.z == another_coordinate.z;
+        if(another_coordinate == null) {
+            return false;
+        }else {
+            return this.x == another_coordinate.x && this.y == another_coordinate.y && this.z == another_coordinate.z;
+        }
     }
     @Override
     public boolean equals(Object o){

@@ -3,9 +3,7 @@ package org.wahlzeit.model;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class CoordinateTest {
 
@@ -65,6 +63,7 @@ public class CoordinateTest {
         // test previous set operation and isEqual + equals at the same time
         assertTrue(coordinate1.isEqual(new Coordinate(1.0, 2.0, 3.0)));
         assertTrue(coordinate1.equals(new Coordinate(1.0, 2.0, 3.0)));
+        assertFalse(coordinate1.isEqual(null));
 
     }
 
