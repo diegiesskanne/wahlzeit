@@ -92,7 +92,9 @@ public class Photo extends DataObject {
 	/**
 	 *
 	 */
-	protected Location location;
+	// this is not how it should be, but we don't have any instructions on how to get the coordinate data for an image so this is just for clarifying that it works
+	protected Location location = new Location(new Coordinate(1.0, 2.0, 3.0));
+	protected String location_string = format_location(location);
 
 
 	/**
@@ -154,11 +156,7 @@ public class Photo extends DataObject {
 
 		creationTime = rset.getLong("creation_time");
 
-		location = new Location(new Coordinate(
-				rset.getDouble("coordinate_x"),
-				rset.getDouble("coordinate_y"),
-				rset.getDouble("coordinate_z")
-		));
+		location_string = rset.getString("location_string");
 
 		maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
 	}
@@ -167,6 +165,8 @@ public class Photo extends DataObject {
 	 * 
 	 */
 	public void writeOn(ResultSet rset) throws SQLException {
+		SysLog.logSysInfo("HOLA");
+		SysLog.logSysInfo(location_string);
 		rset.updateInt("id", id.asInt());
 		rset.updateInt("owner_id", ownerId);
 		rset.updateString("owner_name", ownerName);
@@ -181,9 +181,7 @@ public class Photo extends DataObject {
 		rset.updateInt("praise_sum", praiseSum);
 		rset.updateInt("no_votes", noVotes);
 		rset.updateLong("creation_time", creationTime);
-		rset.updateDouble("coordinate_x", location.getCoordinate().getX());
-		rset.updateDouble("coordinate_y", location.getCoordinate().getY());
-		rset.updateDouble("coordinate_z", location.getCoordinate().getZ());
+		rset.updateString("location_string", location_string);
 
 	}
 
@@ -299,6 +297,10 @@ public class Photo extends DataObject {
 	public void setOwnerLanguage(Language newLanguage) {
 		ownerLanguage = newLanguage;
 		incWriteCount();
+	}
+
+	public String format_location(Location l){
+		return String.format("X=%f Y=%f Z=%f", l.getCoordinate().getX(), l.getCoordinate().getY(), l.getCoordinate().getZ());
 	}
 
 	/**

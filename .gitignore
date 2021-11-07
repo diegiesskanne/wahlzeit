@@ -3,6 +3,7 @@
 /out
 /classes
 /.settings/
+/src/data/*
 *.iml
 .gradle
 .idea
