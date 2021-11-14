@@ -76,6 +76,7 @@ public class Watering_Can_Photo extends Photo {
     }
 
     public void readFrom(ResultSet resultSet) throws SQLException {
+        super.readFrom(resultSet);
         this.setColor(resultSet.getString("color"));
     }
 }
