@@ -93,8 +93,7 @@ public class Photo extends DataObject {
 	 *
 	 */
 	// this is not how it should be, but we don't have any instructions on how to get the coordinate data for an image so this is just for clarifying that it works
-	protected Location location = new Location(new Coordinate(1.0, 2.0, 3.0));
-	protected String location_string = format_location(location);
+	protected Location location;
 
 
 	/**
@@ -156,7 +155,7 @@ public class Photo extends DataObject {
 
 		creationTime = rset.getLong("creation_time");
 
-		location_string = rset.getString("location_string");
+		this.location.readFrom(rset);
 
 		maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
 	}
@@ -165,8 +164,7 @@ public class Photo extends DataObject {
 	 * 
 	 */
 	public void writeOn(ResultSet rset) throws SQLException {
-		SysLog.logSysInfo("HOLA");
-		SysLog.logSysInfo(location_string);
+
 		rset.updateInt("id", id.asInt());
 		rset.updateInt("owner_id", ownerId);
 		rset.updateString("owner_name", ownerName);
@@ -181,8 +179,17 @@ public class Photo extends DataObject {
 		rset.updateInt("praise_sum", praiseSum);
 		rset.updateInt("no_votes", noVotes);
 		rset.updateLong("creation_time", creationTime);
-		rset.updateString("location_string", location_string);
+		if(this.location != null) {
+			this.location.writeOn(rset);
+		}
+	}
 
+	@Override
+	public boolean isDirty() {
+		boolean dirty = this.writeCount != 0;
+		boolean ldirty = this.location != null && this.location.isDirty();
+
+		return dirty || ldirty;
 	}
 
 	/**

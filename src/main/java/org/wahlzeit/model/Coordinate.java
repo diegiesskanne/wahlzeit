@@ -1,6 +1,13 @@
 package org.wahlzeit.model;
 
-public class Coordinate{
+import org.wahlzeit.services.DataObject;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Objects;
+
+public class Coordinate extends DataObject {
 
     private double x;
 
@@ -58,7 +65,12 @@ public class Coordinate{
         if(another_coordinate == null) {
             return false;
         }else {
-            return this.x == another_coordinate.x && this.y == another_coordinate.y && this.z == another_coordinate.z;
+            double max_delta = 0.000001;
+            double delta_x = this.x - another_coordinate.x;
+            double delta_y = this.y - another_coordinate.y;
+            double delta_z = this.z - another_coordinate.z;
+
+            return Math.abs(delta_x) < max_delta && Math.abs(delta_y) < max_delta && Math.abs(delta_z) < max_delta;
         }
     }
     @Override
@@ -68,6 +80,36 @@ public class Coordinate{
         }else{
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z, location);
+    }
+
+    @Override
+    public String getIdAsString() {
+        return null;
+    }
+
+    @Override
+    public void readFrom(ResultSet resultSet) throws SQLException {
+        resultSet.getDouble("coordinate_x");
+        resultSet.getDouble("coordinate_y");
+        resultSet.getDouble("coordinate_x");
+
+    }
+
+    @Override
+    public void writeOn(ResultSet resultSet) throws SQLException {
+        resultSet.updateDouble("coordinate_x", this.getX());
+        resultSet.updateDouble("coordinate_y", this.getY());
+        resultSet.updateDouble("coordinate_z", this.getZ());
+    }
+
+    @Override
+    public void writeId(PreparedStatement stmt, int pos) throws SQLException {
+
     }
 }
 

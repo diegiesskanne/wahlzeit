@@ -20,7 +20,7 @@ public class PhotoManager extends ObjectManager {
 	/**
 	 * 
 	 */
-	protected static final PhotoManager instance = new PhotoManager();
+	protected static final Watering_Can_Photo_Manager instance = new Watering_Can_Photo_Manager();
 
 	/**
 	 * In-memory cache for photos

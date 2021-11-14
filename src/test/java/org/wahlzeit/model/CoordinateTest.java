@@ -2,8 +2,13 @@ package org.wahlzeit.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.verify;
 
 public class CoordinateTest {
 
@@ -88,6 +93,19 @@ public class CoordinateTest {
 
         assertEquals(test_coordinate_3.getDistance(test_coordinate_5), Double.POSITIVE_INFINITY, 0.0);
         assertEquals(test_coordinate_4.getDistance(test_coordinate_5), 0.0, 0.0);
+    }
+
+    @Test
+    public void testDatabase() throws SQLException {
+
+        Coordinate coordinate = new Coordinate(0.0, 0.0, 7.0);
+        ResultSet testset = Mockito.mock(ResultSet.class);
+
+        coordinate.writeOn(testset);
+
+        verify(testset, Mockito.times(1)).updateDouble("coordinate_x", coordinate.getX());
+        verify(testset, Mockito.times(1)).updateDouble("coordinate_y", coordinate.getY());
+        verify(testset, Mockito.times(1)).updateDouble("coordinate_z", coordinate.getZ());
     }
 
 }

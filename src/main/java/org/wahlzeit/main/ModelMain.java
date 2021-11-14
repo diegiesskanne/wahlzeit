@@ -32,6 +32,7 @@ public abstract class ModelMain extends AbstractMain {
  		loadGlobals();
 
 		PhotoFactory.initialize();
+		Watering_Can_Photo_Factory.initialize();
 	}
 	
 	/**
