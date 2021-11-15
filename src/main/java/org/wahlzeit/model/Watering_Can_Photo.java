@@ -60,8 +60,6 @@ public class Watering_Can_Photo extends Photo {
         } catch (Exception e) {
             color = null; // Not defined
         }
-        System.out.println("HELLO");
-        System.out.println(color);
         this.color = color;
 
     }
@@ -70,11 +68,13 @@ public class Watering_Can_Photo extends Photo {
         return manager;
     }
 
+    @Override
     public void writeOn(ResultSet resultSet) throws SQLException {
         super.writeOn(resultSet);
         resultSet.updateInt("color", Integer.parseInt(this.getColor().toString()));
     }
 
+    @Override
     public void readFrom(ResultSet resultSet) throws SQLException {
         super.readFrom(resultSet);
         this.setColor(resultSet.getString("color"));

@@ -154,8 +154,9 @@ public class Photo extends DataObject {
 		noVotes = rset.getInt("no_votes");
 
 		creationTime = rset.getLong("creation_time");
-
-		this.location.readFrom(rset);
+		if (location != null) {
+			this.location.readFrom(rset);
+		}
 
 		maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
 	}

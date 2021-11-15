@@ -60,7 +60,6 @@ public class PhotoCase extends Case {
 		return String.valueOf(id);
 	}
 
-
 	/**
 	 * 
 	 */
