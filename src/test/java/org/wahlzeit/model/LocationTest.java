@@ -18,7 +18,7 @@ public class LocationTest {
 
     @Before
     public void initLocation() {
-        location = new Location(new Coordinate(42.0, 420.0, -42.0));
+        location = new Location(new CartesianCoordinate(42.0, 420.0, -42.0));
     }
 
     @Test
@@ -32,22 +32,22 @@ public class LocationTest {
     @Test
     public void testGetter() {
 
-        Coordinate coordinate = new Coordinate(42.0, 420.0, -42.0);
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(42.0, 420.0, -42.0);
 
         // check getter
-        assertTrue(location.getCoordinate().isEqual(coordinate));
+        assertTrue(location.getCoordinate().isEqual(cartesianCoordinate));
     }
 
     @Test
     public void testSaveInDatabase() throws SQLException {
 
-        Coordinate coordinate = Mockito.mock(Coordinate.class);
+        CartesianCoordinate cartesianCoordinate = Mockito.mock(CartesianCoordinate.class);
         ResultSet testset = Mockito.mock(ResultSet.class);
-        Location location = new Location(coordinate);
+        Location location = new Location(cartesianCoordinate);
 
         location.writeOn(testset);
 
-        verify(coordinate, Mockito.times(1)).writeOn(testset);
+        verify(cartesianCoordinate, Mockito.times(1)).writeOn(testset);
 
     }
 }

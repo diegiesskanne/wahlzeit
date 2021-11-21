@@ -51,8 +51,8 @@ public class WateringCanPhotoTest {
     public void testWateringCanPhoto() throws SQLException {
 
         Watering_Can_Photo wcphoto3 = initPhotoMock(resultSetMock);
-        Coordinate coordinate = new Coordinate(4.0, 2.0, 0.0);
-        wcphoto3.location = new Location(coordinate);
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(4.0, 2.0, 0.0);
+        wcphoto3.location = new Location(cartesianCoordinate);
 
         String testcolor = "blue";
         wcphoto3.setColor(testcolor);

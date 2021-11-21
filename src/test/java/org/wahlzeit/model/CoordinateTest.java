@@ -12,39 +12,43 @@ import static org.mockito.Mockito.verify;
 
 public class CoordinateTest {
 
-    private Coordinate coordinate1;
+    private CartesianCoordinate cartesianCoordinate1;
 
-    private Coordinate coordinate2;
+    private CartesianCoordinate cartesianCoordinate2;
 
-    private Coordinate coordinate3;
+    private CartesianCoordinate cartesianCoordinate3;
+
+    private CartesianCoordinate cartesianCoordinate4;
 
     @Before
     public void initCoordinates() {
-        coordinate1 = new Coordinate(-2.0, 0.0, 3.0);
-        coordinate2 = new Coordinate(0.3333, -(2.0 / 3.0), 24);
-        coordinate3 = new Coordinate(0.0, 1243.0, 42.0);
+        cartesianCoordinate1 = new CartesianCoordinate(-2.0, 0.0, 3.0);
+        cartesianCoordinate2 = new CartesianCoordinate(0.3333, -(2.0 / 3.0), 24);
+        cartesianCoordinate3 = new CartesianCoordinate(0.0, 1243.0, 42.0);
+        cartesianCoordinate4 = new CartesianCoordinate(3.0, 4.0, 5.0);
     }
 
     @Test
     public void testConstructor() {
 
         // check if coordinates have been initialized
-        assertNotNull(coordinate1);
-        assertNotNull(coordinate2);
-        assertNotNull(coordinate3);
+        assertNotNull(cartesianCoordinate1);
+        assertNotNull(cartesianCoordinate2);
+        assertNotNull(cartesianCoordinate3);
+        assertNotNull(cartesianCoordinate4);
     }
 
     @Test
     public void testGetter() {
 
         // test negative + X
-        assertEquals(-2.0, coordinate1.getX(), 0.0);
+        assertEquals(-2.0, cartesianCoordinate1.getX(), 0.0);
 
         // test zero + Y
-        assertEquals(0.0, coordinate1.getY(), 0.0);
+        assertEquals(0.0, cartesianCoordinate1.getY(), 0.0);
 
         // test positive + Z
-        assertEquals(42.0, coordinate3.getZ(), 0.0);
+        assertEquals(42.0, cartesianCoordinate3.getZ(), 0.0);
 
     }
 
@@ -52,23 +56,23 @@ public class CoordinateTest {
     public void testSet_and_Equal() {
 
         // create new coordinate and change its values
-        Coordinate test_coordinate = new Coordinate(3.0, 2.0, 1.0);
-        test_coordinate.setX(42.0);
-        test_coordinate.setY(42.0);
-        test_coordinate.setZ(42.0);
-        assertEquals(test_coordinate.getX(), test_coordinate.getY(), 0.0);
-        assertEquals(test_coordinate.getY(), test_coordinate.getZ(), 0.0);
+        CartesianCoordinate test_Cartesian_coordinate = new CartesianCoordinate(3.0, 2.0, 1.0);
+        test_Cartesian_coordinate.setX(42.0);
+        test_Cartesian_coordinate.setY(42.0);
+        test_Cartesian_coordinate.setZ(42.0);
+        assertEquals(test_Cartesian_coordinate.getX(), test_Cartesian_coordinate.getY(), 0.0);
+        assertEquals(test_Cartesian_coordinate.getY(), test_Cartesian_coordinate.getZ(), 0.0);
 
         // test setX with taking the old value into account
-        coordinate1.setX(coordinate1.getX() + 3);
+        cartesianCoordinate1.setX(cartesianCoordinate1.getX() + 3);
 
         // test setY
-        coordinate1.setY(2.0);
+        cartesianCoordinate1.setY(2.0);
 
         // test previous set operation and isEqual + equals at the same time
-        assertTrue(coordinate1.isEqual(new Coordinate(1.0, 2.0, 3.0)));
-        assertTrue(coordinate1.equals(new Coordinate(1.0, 2.0, 3.0)));
-        assertFalse(coordinate1.isEqual(null));
+        assertTrue(cartesianCoordinate1.isEqual(new CartesianCoordinate(1.0, 2.0, 3.0)));
+        assertTrue(cartesianCoordinate1.equals(new CartesianCoordinate(1.0, 2.0, 3.0)));
+        assertFalse(cartesianCoordinate1.isEqual(null));
 
     }
 
@@ -76,36 +80,63 @@ public class CoordinateTest {
     public void testGetDistance() {
 
         // test with positive and negative x,y,z values
-        Coordinate test_coordinate_1 = new Coordinate(1.0, 3.0, 42.0);
-        Coordinate test_coordinate_2 = new Coordinate(4.0, -1.0, -42.0);
+        CartesianCoordinate test_Cartesian_coordinate_1 = new CartesianCoordinate(1.0, 3.0, 42.0);
+        CartesianCoordinate test_Cartesian_coordinate_2 = new CartesianCoordinate(4.0, -1.0, -42.0);
 
-        double distance = test_coordinate_1.getDistance(test_coordinate_2);
-        double distance_the_other_way = test_coordinate_2.getDistance(test_coordinate_1);
+        double distance = test_Cartesian_coordinate_1.getDistance(test_Cartesian_coordinate_2);
+        double distance_the_other_way = test_Cartesian_coordinate_2.getDistance(test_Cartesian_coordinate_1);
         assertEquals(distance, 84.1, 0.1);
 
         // the other way around should be the same distance
         assertEquals(distance, distance_the_other_way, 0.0);
 
         // test edge cases
-        Coordinate test_coordinate_3 = new Coordinate(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-        Coordinate test_coordinate_4 = new Coordinate(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
-        Coordinate test_coordinate_5 = new Coordinate(0.0, 0.0, 0.0);
+        CartesianCoordinate test_Cartesian_coordinate_3 = new CartesianCoordinate(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+        CartesianCoordinate test_Cartesian_coordinate_4 = new CartesianCoordinate(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
+        CartesianCoordinate test_Cartesian_coordinate_5 = new CartesianCoordinate(0.0, 0.0, 0.0);
 
-        assertEquals(test_coordinate_3.getDistance(test_coordinate_5), Double.POSITIVE_INFINITY, 0.0);
-        assertEquals(test_coordinate_4.getDistance(test_coordinate_5), 0.0, 0.0);
+        assertEquals(test_Cartesian_coordinate_3.getDistance(test_Cartesian_coordinate_5), Double.POSITIVE_INFINITY, 0.0);
+        assertEquals(test_Cartesian_coordinate_4.getDistance(test_Cartesian_coordinate_5), 0.0, 0.0);
     }
 
     @Test
     public void testDatabase() throws SQLException {
 
-        Coordinate coordinate = new Coordinate(0.0, 0.0, 7.0);
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(0.0, 0.0, 7.0);
         ResultSet testset = Mockito.mock(ResultSet.class);
 
-        coordinate.writeOn(testset);
+        cartesianCoordinate.writeOn(testset);
 
-        verify(testset, Mockito.times(1)).updateDouble("coordinate_x", coordinate.getX());
-        verify(testset, Mockito.times(1)).updateDouble("coordinate_y", coordinate.getY());
-        verify(testset, Mockito.times(1)).updateDouble("coordinate_z", coordinate.getZ());
+        verify(testset, Mockito.times(1)).updateDouble("coordinate_x", cartesianCoordinate.getX());
+        verify(testset, Mockito.times(1)).updateDouble("coordinate_y", cartesianCoordinate.getY());
+        verify(testset, Mockito.times(1)).updateDouble("coordinate_z", cartesianCoordinate.getZ());
+    }
+
+    @Test
+    public void testConversion() {
+
+        SphericCoordinate sphericCoordinate1 = new SphericCoordinate(cartesianCoordinate4);
+        SphericCoordinate sphericCoordinate2 = new SphericCoordinate(0.93, 0.79, 7.07);
+        SphericCoordinate sphericCoordinate3 = new SphericCoordinate(0.23, 0.41, 15.02);
+
+        double a = sphericCoordinate2.getCentralAngle(sphericCoordinate3);
+
+        CartesianCoordinate cartesianCoordinate5 = new CartesianCoordinate(sphericCoordinate1);
+
+        assertEquals(sphericCoordinate1.getPhi(), sphericCoordinate2.getPhi(), 0.01);
+        assertEquals(sphericCoordinate1.getTheta(), sphericCoordinate2.getTheta(), 0.01);
+        assertEquals(sphericCoordinate1.getRadius(), sphericCoordinate2.getRadius(), 0.01);
+
+        assertEquals(cartesianCoordinate4.getX(), cartesianCoordinate5.getX(), 0.01);
+        assertEquals(cartesianCoordinate4.getY(), cartesianCoordinate5.getY(), 0.01);
+        assertEquals(cartesianCoordinate4.getZ(), cartesianCoordinate5.getZ(), 0.01);
+
+        // test getCentralAngle
+        assertEquals(a, 0.76, 0.01);
+
+        // test interchangeability and isEqual
+        assertTrue(sphericCoordinate1.isEqual(cartesianCoordinate5));
+        assertTrue(cartesianCoordinate5.isEqual(sphericCoordinate1));
     }
 
 }
