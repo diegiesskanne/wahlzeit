@@ -9,14 +9,14 @@ import java.sql.SQLException;
 public class Location extends DataObject {
 
     // Coordinate has to be final, because this way it is insured that there is exactly one Coordinate
-    private final CartesianCoordinate cartesianCoordinate;
+    private final Coordinate coordinate;
 
-    public Location(CartesianCoordinate cartesianCoordinate) {
-        this.cartesianCoordinate = cartesianCoordinate;
+    public Location(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
-    public CartesianCoordinate getCoordinate() {
-        return cartesianCoordinate;
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
     @Override
@@ -26,12 +26,12 @@ public class Location extends DataObject {
 
     @Override
     public void readFrom(ResultSet resultSet) throws SQLException {
-        this.cartesianCoordinate.readFrom(resultSet);
+        coordinate.readFrom(resultSet);
     }
 
     @Override
     public void writeOn(ResultSet resultSet) throws SQLException {
-        this.cartesianCoordinate.writeOn(resultSet);
+        coordinate.writeOn(resultSet);
     }
 
     @Override

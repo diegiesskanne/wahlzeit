@@ -60,9 +60,9 @@ public class WateringCanPhotoTest {
         wcphoto3.location.writeOn(resultSetMock);
 
         assertEquals(wcphoto3.getColor(), Color.blue);
-        verify(resultSetMock, Mockito.times(1)).updateDouble("coordinate_x", wcphoto3.location.getCoordinate().getX());
-        verify(resultSetMock, Mockito.times(1)).updateDouble("coordinate_y", wcphoto3.location.getCoordinate().getY());
-        verify(resultSetMock, Mockito.times(1)).updateDouble("coordinate_z", wcphoto3.location.getCoordinate().getZ());
+        verify(resultSetMock, Mockito.times(1)).updateDouble("coordinate_x", wcphoto3.location.getCoordinate().asCartesianCoordinate().getX());
+        verify(resultSetMock, Mockito.times(1)).updateDouble("coordinate_y", wcphoto3.location.getCoordinate().asCartesianCoordinate().getY());
+        verify(resultSetMock, Mockito.times(1)).updateDouble("coordinate_z", wcphoto3.location.getCoordinate().asCartesianCoordinate().getZ());
     }
 
 }

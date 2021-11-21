@@ -42,12 +42,17 @@ public class LocationTest {
     public void testSaveInDatabase() throws SQLException {
 
         CartesianCoordinate cartesianCoordinate = Mockito.mock(CartesianCoordinate.class);
-        ResultSet testset = Mockito.mock(ResultSet.class);
-        Location location = new Location(cartesianCoordinate);
+        SphericCoordinate sphericCoordinate = Mockito.mock(SphericCoordinate.class);
 
-        location.writeOn(testset);
+        ResultSet testset = Mockito.mock(ResultSet.class);
+        Location location1 = new Location(cartesianCoordinate);
+        Location location2 = new Location(sphericCoordinate);
+
+        location1.writeOn(testset);
+        location2.writeOn(testset);
 
         verify(cartesianCoordinate, Mockito.times(1)).writeOn(testset);
+        verify(sphericCoordinate, Mockito.times(1)).writeOn(testset);
 
     }
 }

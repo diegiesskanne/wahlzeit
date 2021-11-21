@@ -103,13 +103,20 @@ public class CoordinateTest {
     public void testDatabase() throws SQLException {
 
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(0.0, 0.0, 7.0);
+        SphericCoordinate sphericCoordinate = new SphericCoordinate(0.10, 0.20, 3.0);
         ResultSet testset = Mockito.mock(ResultSet.class);
 
         cartesianCoordinate.writeOn(testset);
+        sphericCoordinate.writeOn(testset);
 
         verify(testset, Mockito.times(1)).updateDouble("coordinate_x", cartesianCoordinate.getX());
         verify(testset, Mockito.times(1)).updateDouble("coordinate_y", cartesianCoordinate.getY());
         verify(testset, Mockito.times(1)).updateDouble("coordinate_z", cartesianCoordinate.getZ());
+
+        verify(testset, Mockito.times(1)).updateDouble("coordinate_theta", sphericCoordinate.getTheta());
+        verify(testset, Mockito.times(1)).updateDouble("coordinate_phi", sphericCoordinate.getPhi());
+        verify(testset, Mockito.times(1)).updateDouble("coordinate_radius", sphericCoordinate.getRadius());
+
     }
 
     @Test
@@ -118,6 +125,8 @@ public class CoordinateTest {
         SphericCoordinate sphericCoordinate1 = new SphericCoordinate(cartesianCoordinate4);
         SphericCoordinate sphericCoordinate2 = new SphericCoordinate(0.93, 0.79, 7.07);
         SphericCoordinate sphericCoordinate3 = new SphericCoordinate(0.23, 0.41, 15.02);
+
+        double distance = sphericCoordinate2.getCartesianDistance(sphericCoordinate3);
 
         double a = sphericCoordinate2.getCentralAngle(sphericCoordinate3);
 
@@ -130,6 +139,9 @@ public class CoordinateTest {
         assertEquals(cartesianCoordinate4.getX(), cartesianCoordinate5.getX(), 0.01);
         assertEquals(cartesianCoordinate4.getY(), cartesianCoordinate5.getY(), 0.01);
         assertEquals(cartesianCoordinate4.getZ(), cartesianCoordinate5.getZ(), 0.01);
+
+        // test distance
+        assertEquals(distance, 9.62, 0.01);
 
         // test getCentralAngle
         assertEquals(a, 0.76, 0.01);

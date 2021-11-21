@@ -92,7 +92,6 @@ public class Photo extends DataObject {
 	/**
 	 *
 	 */
-	// this is not how it should be, but we don't have any instructions on how to get the coordinate data for an image so this is just for clarifying that it works
 	protected Location location;
 
 
@@ -308,7 +307,7 @@ public class Photo extends DataObject {
 	}
 
 	public String format_location(Location l){
-		return String.format("X=%f Y=%f Z=%f", l.getCoordinate().getX(), l.getCoordinate().getY(), l.getCoordinate().getZ());
+		return String.format("X=%f Y=%f Z=%f", l.getCoordinate().asCartesianCoordinate().getX(), l.getCoordinate().asCartesianCoordinate().getY(), l.getCoordinate().asCartesianCoordinate().getZ());
 	}
 
 	/**
