@@ -2,6 +2,7 @@ package org.wahlzeit.model;
 
 import org.wahlzeit.services.DataObject;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -60,6 +61,16 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
         }else{
             return false;
         }
+    }
+
+    @Override
+    public String getIdAsString() {
+        throw new UnsupportedOperationException("This Class has no ID!");
+    }
+
+    @Override
+    public void writeId(PreparedStatement stmt, int pos) throws SQLException {
+        throw new UnsupportedOperationException("This Class has no ID!");
     }
 
     // Abstract Methods to be implemented in the subclasses

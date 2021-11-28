@@ -70,11 +70,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     @Override
-    public String getIdAsString() {
-        return null;
-    }
-
-    @Override
     public void readFrom(ResultSet resultSet) throws SQLException {
         resultSet.getDouble("coordinate_x");
         resultSet.getDouble("coordinate_y");
@@ -87,11 +82,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
         resultSet.updateDouble("coordinate_x", this.getX());
         resultSet.updateDouble("coordinate_y", this.getY());
         resultSet.updateDouble("coordinate_z", this.getZ());
-    }
-
-    @Override
-    public void writeId(PreparedStatement stmt, int pos) throws SQLException {
-
     }
 
     @Override

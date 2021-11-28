@@ -100,7 +100,7 @@ public class CoordinateTest {
     }
 
     @Test
-    public void testDatabase() throws SQLException {
+    public void testPersistence() throws SQLException {
 
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(0.0, 0.0, 7.0);
         SphericCoordinate sphericCoordinate = new SphericCoordinate(0.10, 0.20, 3.0);
@@ -109,10 +109,12 @@ public class CoordinateTest {
         cartesianCoordinate.writeOn(testset);
         sphericCoordinate.writeOn(testset);
 
+        // test persistence cartesian
         verify(testset, Mockito.times(1)).updateDouble("coordinate_x", cartesianCoordinate.getX());
         verify(testset, Mockito.times(1)).updateDouble("coordinate_y", cartesianCoordinate.getY());
         verify(testset, Mockito.times(1)).updateDouble("coordinate_z", cartesianCoordinate.getZ());
 
+        // test persistence spheric
         verify(testset, Mockito.times(1)).updateDouble("coordinate_theta", sphericCoordinate.getTheta());
         verify(testset, Mockito.times(1)).updateDouble("coordinate_phi", sphericCoordinate.getPhi());
         verify(testset, Mockito.times(1)).updateDouble("coordinate_radius", sphericCoordinate.getRadius());
@@ -134,6 +136,8 @@ public class CoordinateTest {
         assertEquals(cartesianCoordinate4.getY(), cartesianCoordinate3.getY(), 0.01);
         assertEquals(cartesianCoordinate4.getZ(), cartesianCoordinate3.getZ(), 0.01);
 
+
+        // if the two coordinate types are interchangeable, these isEqual tests should return true
         assertTrue(sphericCoordinate1.isEqual(cartesianCoordinate3));
         assertTrue(cartesianCoordinate3.isEqual(sphericCoordinate1));
     }
@@ -145,8 +149,11 @@ public class CoordinateTest {
         SphericCoordinate sphericCoordinate3 = new SphericCoordinate(0.23, 0.41, 15.02);
 
         double distance = sphericCoordinate2.getCartesianDistance(sphericCoordinate3);
+        double self_distance = sphericCoordinate2.getCartesianDistance(sphericCoordinate2);
 
+        // simple distance tests
         assertEquals(distance, 9.62, 0.01);
+        assertEquals(self_distance, 0.0, 0.01);
 
     }
 
@@ -163,9 +170,16 @@ public class CoordinateTest {
         double c = sphericCoordinate3.getCentralAngle(sphericCoordinate4);
         double d = sphericCoordinate1.getCentralAngle(sphericCoordinate1);
 
+        // simple angle
         assertEquals(a, 0.6, 0.01);
+
+        // the other way around
         assertEquals(b, 0.6, 0.01);
+
+        //two equal coordinates
         assertEquals(c, 0.0, 0.01);
+
+        // self angle
         assertEquals(d, 0.0, 0.01);
 
     }
@@ -178,7 +192,10 @@ public class CoordinateTest {
         SphericCoordinate sphericCoordinate3 = new SphericCoordinate(0.2, 0.0, 420.0);
         SphericCoordinate sphericCoordinate4 = new SphericCoordinate(0.2, 2*Math.PI, 420.0);
 
+        // phi is a manifold of 2 PI
         assertTrue(sphericCoordinate1.isEqual(sphericCoordinate2));
+
+        // theta is a manifold of 2 PI
         assertTrue(sphericCoordinate3.isEqual(sphericCoordinate4));
 
     }

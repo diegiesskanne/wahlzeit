@@ -68,10 +68,6 @@ public class SphericCoordinate extends AbstractCoordinate {
         return this;
     }
 
-    @Override
-    public String getIdAsString() {
-        return null;
-    }
 
     @Override
     public void readFrom(ResultSet resultSet) throws SQLException {
@@ -85,10 +81,5 @@ public class SphericCoordinate extends AbstractCoordinate {
         resultSet.updateDouble("coordinate_theta", this.getTheta());
         resultSet.updateDouble("coordinate_phi", this.getPhi());
         resultSet.updateDouble("coordinate_radius", this.getRadius());
-    }
-
-    @Override
-    public void writeId(PreparedStatement stmt, int pos) throws SQLException {
-
     }
 }
