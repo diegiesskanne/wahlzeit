@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class SphericCoordinate extends DataObject implements Coordinate {
+public class SphericCoordinate extends AbstractCoordinate {
     
     private double phi;
     
@@ -27,7 +27,9 @@ public class SphericCoordinate extends DataObject implements Coordinate {
     public SphericCoordinate(CartesianCoordinate c) {
         radius = Math.sqrt(Math.pow(c.getX(), 2) + Math.pow(c.getY(), 2) + Math.pow(c.getZ(), 2));
 
-        theta = Math.atan( Math.sqrt(Math.pow(c.getX(), 2) + Math.pow(c.getY(), 2)) / c.getZ());
+        if(c.getZ() != 0) {
+            theta = Math.atan(Math.sqrt(Math.pow(c.getX(), 2) + Math.pow(c.getY(), 2)) / c.getZ());
+        }
 
         if (c.getX() > 0) {
             phi = Math.atan(c.getY() / c.getX());
@@ -62,43 +64,8 @@ public class SphericCoordinate extends DataObject implements Coordinate {
     }
 
     @Override
-    public double getCartesianDistance(Coordinate coordinate) {
-        return asCartesianCoordinate().getCartesianDistance(coordinate);
-    }
-
-    @Override
     public SphericCoordinate asSphericCoordinate() {
         return this;
-    }
-
-    @Override
-    public double getCentralAngle(Coordinate coordinate) {
-
-        double theta = coordinate.asSphericCoordinate().getTheta();
-
-        double phi = coordinate.asSphericCoordinate().getPhi();
-
-        return Math.acos(
-                Math.sin(phi) * Math.sin(this.phi)
-                + Math.cos(phi) * Math.cos(this.phi) * Math.cos(Math.abs(theta-this.theta))
-        );
-    }
-
-
-    @Override
-    public boolean isEqual(Coordinate coordinate) {
-
-        if (coordinate == null) {
-            return false;
-        }else {
-            return asCartesianCoordinate().isEqual(coordinate);
-        }
-
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(phi, theta, radius);
     }
 
     @Override

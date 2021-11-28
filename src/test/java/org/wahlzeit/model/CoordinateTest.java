@@ -124,31 +124,62 @@ public class CoordinateTest {
 
         SphericCoordinate sphericCoordinate1 = new SphericCoordinate(cartesianCoordinate4);
         SphericCoordinate sphericCoordinate2 = new SphericCoordinate(0.93, 0.79, 7.07);
-        SphericCoordinate sphericCoordinate3 = new SphericCoordinate(0.23, 0.41, 15.02);
-
-        double distance = sphericCoordinate2.getCartesianDistance(sphericCoordinate3);
-
-        double a = sphericCoordinate2.getCentralAngle(sphericCoordinate3);
-
-        CartesianCoordinate cartesianCoordinate5 = new CartesianCoordinate(sphericCoordinate1);
+        CartesianCoordinate cartesianCoordinate3 = new CartesianCoordinate(sphericCoordinate1);
 
         assertEquals(sphericCoordinate1.getPhi(), sphericCoordinate2.getPhi(), 0.01);
         assertEquals(sphericCoordinate1.getTheta(), sphericCoordinate2.getTheta(), 0.01);
         assertEquals(sphericCoordinate1.getRadius(), sphericCoordinate2.getRadius(), 0.01);
 
-        assertEquals(cartesianCoordinate4.getX(), cartesianCoordinate5.getX(), 0.01);
-        assertEquals(cartesianCoordinate4.getY(), cartesianCoordinate5.getY(), 0.01);
-        assertEquals(cartesianCoordinate4.getZ(), cartesianCoordinate5.getZ(), 0.01);
+        assertEquals(cartesianCoordinate4.getX(), cartesianCoordinate3.getX(), 0.01);
+        assertEquals(cartesianCoordinate4.getY(), cartesianCoordinate3.getY(), 0.01);
+        assertEquals(cartesianCoordinate4.getZ(), cartesianCoordinate3.getZ(), 0.01);
 
-        // test distance
-        assertEquals(distance, 9.62, 0.01);
-
-        // test getCentralAngle
-        assertEquals(a, 0.76, 0.01);
-
-        // test interchangeability and isEqual
-        assertTrue(sphericCoordinate1.isEqual(cartesianCoordinate5));
-        assertTrue(cartesianCoordinate5.isEqual(sphericCoordinate1));
+        assertTrue(sphericCoordinate1.isEqual(cartesianCoordinate3));
+        assertTrue(cartesianCoordinate3.isEqual(sphericCoordinate1));
     }
 
+    @Test
+    public void testDistance() {
+
+        SphericCoordinate sphericCoordinate2 = new SphericCoordinate(0.93, 0.79, 7.07);
+        SphericCoordinate sphericCoordinate3 = new SphericCoordinate(0.23, 0.41, 15.02);
+
+        double distance = sphericCoordinate2.getCartesianDistance(sphericCoordinate3);
+
+        assertEquals(distance, 9.62, 0.01);
+
+    }
+
+    @Test
+    public void testCentralAngle() {
+
+        SphericCoordinate sphericCoordinate1 = new SphericCoordinate(1.2, 0.45, 3.14);
+        SphericCoordinate sphericCoordinate2 = new SphericCoordinate(0.6, 0.45, 3.14);
+        SphericCoordinate sphericCoordinate3 = new SphericCoordinate(0.0, 0.0, 0.0);
+        SphericCoordinate sphericCoordinate4 = new SphericCoordinate(0.0, 0.0, 0.0);
+
+        double a = sphericCoordinate1.getCentralAngle(sphericCoordinate2);
+        double b = sphericCoordinate2.getCentralAngle(sphericCoordinate1);
+        double c = sphericCoordinate3.getCentralAngle(sphericCoordinate4);
+        double d = sphericCoordinate1.getCentralAngle(sphericCoordinate1);
+
+        assertEquals(a, 0.6, 0.01);
+        assertEquals(b, 0.6, 0.01);
+        assertEquals(c, 0.0, 0.01);
+        assertEquals(d, 0.0, 0.01);
+
+    }
+
+    @Test
+    public void testIsEqual() {
+        SphericCoordinate sphericCoordinate1 = new SphericCoordinate(2*Math.PI, 0.6, 3.14);
+        SphericCoordinate sphericCoordinate2 = new SphericCoordinate(6*Math.PI, 0.6, 3.14);
+
+        SphericCoordinate sphericCoordinate3 = new SphericCoordinate(0.2, 0.0, 420.0);
+        SphericCoordinate sphericCoordinate4 = new SphericCoordinate(0.2, 2*Math.PI, 420.0);
+
+        assertTrue(sphericCoordinate1.isEqual(sphericCoordinate2));
+        assertTrue(sphericCoordinate3.isEqual(sphericCoordinate4));
+
+    }
 }

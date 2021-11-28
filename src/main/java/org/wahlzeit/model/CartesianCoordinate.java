@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class CartesianCoordinate extends DataObject implements Coordinate {
+public class CartesianCoordinate extends AbstractCoordinate {
 
     private double x;
 
@@ -70,36 +70,6 @@ public class CartesianCoordinate extends DataObject implements Coordinate {
     }
 
     @Override
-    public boolean isEqual(Coordinate another_coordinate){
-        if(another_coordinate == null) {
-            return false;
-        }else {
-
-            CartesianCoordinate c = another_coordinate.asCartesianCoordinate();
-            double max_delta = 0.000001;
-            double delta_x = this.x - c.x;
-            double delta_y = this.y - c.y;
-            double delta_z = this.z - c.z;
-
-            return Math.abs(delta_x) < max_delta && Math.abs(delta_y) < max_delta && Math.abs(delta_z) < max_delta;
-
-        }
-    }
-    @Override
-    public boolean equals(Object o){
-        if ((o instanceof CartesianCoordinate)){
-            return isEqual((CartesianCoordinate) o);
-        }else{
-            return false;
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(x, y, z, location);
-    }
-
-    @Override
     public String getIdAsString() {
         return null;
     }
@@ -129,20 +99,12 @@ public class CartesianCoordinate extends DataObject implements Coordinate {
         return this;
     }
 
-    @Override
-    public double getCartesianDistance(Coordinate coordinate) {
-        return getDistance(coordinate.asCartesianCoordinate());
-    }
 
     @Override
     public SphericCoordinate asSphericCoordinate() {
         return new SphericCoordinate(this);
     }
 
-    @Override
-    public double getCentralAngle(Coordinate coordinate) {
-        return asSphericCoordinate().getCentralAngle(coordinate);
-    }
 
 }
 
