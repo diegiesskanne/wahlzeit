@@ -12,15 +12,8 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     @Override
     public double getCentralAngle(Coordinate coordinate){
 
-        double theta = coordinate.asSphericCoordinate().getTheta();
+        return this.asSphericCoordinate().calculateCentralAngle(coordinate.asSphericCoordinate());
 
-        double phi = coordinate.asSphericCoordinate().getPhi();
-
-        return Math.acos(
-                Math.sin(phi) * Math.sin(this.asSphericCoordinate().getPhi())
-                        + Math.cos(phi) * Math.cos(this.asSphericCoordinate().getPhi())
-                        * Math.cos(Math.abs(theta-this.asSphericCoordinate().getTheta()))
-        );
     }
 
     @Override
@@ -29,15 +22,7 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
         if(another_coordinate == null) {
             return false;
         } else {
-
-            CartesianCoordinate c = another_coordinate.asCartesianCoordinate();
-            double max_delta = 0.000001;
-            double delta_x = this.asCartesianCoordinate().getX() - c.getX();
-            double delta_y = this.asCartesianCoordinate().getY() - c.getY();
-            double delta_z = this.asCartesianCoordinate().getZ() - c.getZ();
-
-            return Math.abs(delta_x) < max_delta && Math.abs(delta_y) < max_delta && Math.abs(delta_z) < max_delta;
-
+            return this.asCartesianCoordinate().checkEquality(another_coordinate.asCartesianCoordinate());
         }
     }
 
@@ -48,10 +33,7 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
     @Override
     public int hashCode() {
-        CartesianCoordinate this_coordinate = this.asCartesianCoordinate();
-        return Objects.hash(
-                this_coordinate.getX(), this_coordinate.getY(), this_coordinate.getZ(),
-                this_coordinate.getLocation());
+        return this.asCartesianCoordinate().cartesianHash();
     }
 
     @Override

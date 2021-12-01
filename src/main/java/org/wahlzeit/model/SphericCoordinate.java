@@ -57,6 +57,17 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     public void setLocation(Location location) { this.location = location; }
 
+    public double calculateCentralAngle(SphericCoordinate other_sphericCoordinate){
+        double theta = this.getTheta();
+
+        double phi = this.getPhi();
+
+        return Math.acos(
+                Math.sin(phi) * Math.sin(other_sphericCoordinate.getPhi())
+                        + Math.cos(phi) * Math.cos(other_sphericCoordinate.getPhi())
+                        * Math.cos(Math.abs(theta-other_sphericCoordinate.getTheta()))
+        );
+    }
     
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
