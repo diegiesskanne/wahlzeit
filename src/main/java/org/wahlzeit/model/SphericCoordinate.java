@@ -25,6 +25,10 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
     public SphericCoordinate(CartesianCoordinate c) {
+
+        // precondition
+        assert c.assertClassInvariants();
+
         radius = Math.sqrt(Math.pow(c.getX(), 2) + Math.pow(c.getY(), 2) + Math.pow(c.getZ(), 2));
 
         if(c.getZ() != 0) {
@@ -39,17 +43,36 @@ public class SphericCoordinate extends AbstractCoordinate {
             phi = Math.PI / 2;
         }
 
+        // postcondition
+        assert assertClassInvariants();
+
     }
 
-    public double getPhi() { return phi; }
+    public double getPhi() {
+        assert 0 <= phi;
+        assert phi <= (2 * Math.PI);
+        return phi;
+    }
 
-    public double getTheta() { return theta; }
+    public double getTheta() {
+        assert 0 <= theta;
+        assert theta <= (2 * Math.PI);
+        return theta;
+    }
 
     public double getRadius() { return radius; }
 
-    public void setPhi(double phi){ this.phi = phi; }
+    public void setPhi(double phi){
+        assert 0 <= phi;
+        assert phi <= (2 * Math.PI);
+        this.phi = phi;
+    }
 
-    public void setTheta(double theta){ this.theta = theta; }
+    public void setTheta(double theta){
+        assert 0 <= theta;
+        assert theta <= (2 * Math.PI);
+        this.theta = theta;
+    }
 
     public void setRadius(double radius){ this.radius = radius; }
 
@@ -58,6 +81,11 @@ public class SphericCoordinate extends AbstractCoordinate {
     public void setLocation(Location location) { this.location = location; }
 
     public double calculateCentralAngle(SphericCoordinate other_sphericCoordinate){
+
+        // preconditions
+        assert other_sphericCoordinate != null;
+        assert assertClassInvariants();
+
         double theta = this.getTheta();
 
         double phi = this.getPhi();
@@ -67,6 +95,10 @@ public class SphericCoordinate extends AbstractCoordinate {
                         + Math.cos(phi) * Math.cos(other_sphericCoordinate.getPhi())
                         * Math.cos(Math.abs(theta-other_sphericCoordinate.getTheta()))
         );
+    }
+
+    protected boolean assertClassInvariants () {
+        return 0 <= this.theta && this.theta <= (2 * Math.PI) && 0 <= this.phi && this.phi <= (2 * Math.PI);
     }
     
     @Override
@@ -82,6 +114,11 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     @Override
     public void readFrom(ResultSet resultSet) throws SQLException {
+
+        // preconditions
+        assert resultSet != null;
+        assertClassInvariants();
+
         resultSet.getDouble("coordinate_theta");
         resultSet.getDouble("coordinate_phi");
         resultSet.getDouble("coordinate_radius");
@@ -89,6 +126,11 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     @Override
     public void writeOn(ResultSet resultSet) throws SQLException {
+
+        // preconditions
+        assert resultSet != null;
+        assertClassInvariants();
+
         resultSet.updateDouble("coordinate_theta", this.getTheta());
         resultSet.updateDouble("coordinate_phi", this.getPhi());
         resultSet.updateDouble("coordinate_radius", this.getRadius());
