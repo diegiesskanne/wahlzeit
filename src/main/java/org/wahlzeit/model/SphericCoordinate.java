@@ -19,8 +19,8 @@ public class SphericCoordinate extends AbstractCoordinate {
     private Location location;
 
     public SphericCoordinate(double phi, double theta, double radius){
-        this.phi = phi;
-        this.theta = theta;
+        this.phi = phi % (2 * Math.PI);
+        this.theta = theta % (2 * Math.PI);
         this.radius = radius;
     }
 

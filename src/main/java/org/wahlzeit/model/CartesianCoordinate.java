@@ -112,7 +112,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     protected boolean assertClassInvariants() {
-        return this.x < Double.MAX_VALUE && this.y < Double.MAX_VALUE && this.z < Double.MAX_VALUE;
+        return this.x <= Double.MAX_VALUE && this.y <= Double.MAX_VALUE && this.z <= Double.MAX_VALUE;
     }
 
     @Override
