@@ -97,8 +97,11 @@ public class SphericCoordinate extends AbstractCoordinate {
         );
     }
 
+    @Override
     protected boolean assertClassInvariants () {
-        return 0 <= this.theta && this.theta <= (2 * Math.PI) && 0 <= this.phi && this.phi <= (2 * Math.PI) && 0 <= this.radius && this.radius <= Double.MAX_VALUE;
+        return 0 <= this.theta && this.theta <= (2 * Math.PI)
+                && 0 <= this.phi && this.phi <= (2 * Math.PI)
+                && 0 <= this.radius && this.radius <= Double.MAX_VALUE;
     }
     
     @Override

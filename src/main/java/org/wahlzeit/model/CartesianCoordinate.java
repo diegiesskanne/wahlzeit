@@ -26,6 +26,10 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     public CartesianCoordinate(SphericCoordinate sphericCoordinate) {
 
+        System.out.println(sphericCoordinate.getPhi());
+        System.out.println(sphericCoordinate.getTheta());
+        System.out.println(sphericCoordinate.getRadius());
+
         // precondition
         assert sphericCoordinate.assertClassInvariants();
 
@@ -90,7 +94,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
         assert cartesianCoordinate != null;
         assert assertClassInvariants();
 
-        double max_delta = 0.000001;
+        double max_delta = 0.001;
         double delta_x = this.getX() - cartesianCoordinate.getX();
         double delta_y = this.getY() - cartesianCoordinate.getY();
         double delta_z = this.getZ() - cartesianCoordinate.getZ();
