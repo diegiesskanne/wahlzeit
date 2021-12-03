@@ -5,19 +5,32 @@ import org.wahlzeit.services.DataObject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public abstract class AbstractCoordinate extends DataObject implements Coordinate {
 
     @Override
     public double getCentralAngle(Coordinate coordinate){
 
-        return this.asSphericCoordinate().calculateCentralAngle(coordinate.asSphericCoordinate());
+        // preconditions
+        if (coordinate == null) throw new IllegalArgumentException("coordinate is null");
+        this.assertClassInvariants();
+
+        // convert to spheric and call implementation method
+        double centralAngle = this.asSphericCoordinate().calculateCentralAngle(coordinate.asSphericCoordinate());
+
+        // postcondition
+        assert 0 <= centralAngle;
+        assert centralAngle <= (2 * Math.PI);
+
+        return centralAngle;
 
     }
 
     @Override
     public boolean isEqual(Coordinate another_coordinate){
+
+        // precondition
+        this.assertClassInvariants();
 
         if(another_coordinate == null) {
             return false;
@@ -28,7 +41,18 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
     @Override
     public double getCartesianDistance(Coordinate coordinate) {
-        return this.asCartesianCoordinate().getDistance(coordinate.asCartesianCoordinate());
+
+        // precondition
+        if (coordinate == null) throw new IllegalArgumentException("coordinate is null");
+        this.assertClassInvariants();
+
+        // convert to cartesian and call implementation method
+        double cartesianDistance = this.asCartesianCoordinate().getDistance(coordinate.asCartesianCoordinate());
+
+        // postcondition
+        assert 0 <= cartesianDistance;
+
+        return cartesianDistance;
     }
 
     @Override
@@ -38,6 +62,10 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
     @Override
     public boolean equals(Object o){
+
+        // precondition
+        assertClassInvariants();
+
         if ((o instanceof Coordinate)){
             return isEqual((Coordinate) o);
         }else{
@@ -67,4 +95,6 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
     @Override
     public abstract void writeOn(ResultSet resultSet) throws SQLException;
+
+    protected abstract boolean assertClassInvariants();
 }

@@ -192,11 +192,32 @@ public class CoordinateTest {
         SphericCoordinate sphericCoordinate3 = new SphericCoordinate(0.2, 0.0, 420.0);
         SphericCoordinate sphericCoordinate4 = new SphericCoordinate(0.2, 2*Math.PI, 420.0);
 
+        Coordinate coordinate1 = new SphericCoordinate(32.0, 34.0, 13.0);
+        Coordinate coordinate2 = new SphericCoordinate(0.584, 2.584, 13.0);
+
+        // check constructor functionality
+        assertTrue(coordinate1.isEqual(coordinate2));
+
         // phi is a manifold of 2 PI
         assertTrue(sphericCoordinate1.isEqual(sphericCoordinate2));
 
         // theta is a manifold of 2 PI
         assertTrue(sphericCoordinate3.isEqual(sphericCoordinate4));
 
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testNullSafetyGCA() {
+        Coordinate coordinate1 = new SphericCoordinate(32.0, 34.0, 13.0);
+
+        coordinate1.getCentralAngle(null);
+
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testNullSafetyGCD() {
+        Coordinate coordinate2 = new CartesianCoordinate(-2.0, 24.0, 13.0);
+
+        coordinate2.getCartesianDistance(null);
     }
 }
