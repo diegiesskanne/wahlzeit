@@ -18,13 +18,13 @@ public class SphericCoordinate extends AbstractCoordinate {
     // may be discarded
     private Location location;
 
-    public SphericCoordinate(double phi, double theta, double radius){
+    public SphericCoordinate(double phi, double theta, double radius) throws CoordinateException {
         this.phi = phi % (2 * Math.PI);
         this.theta = theta % (2 * Math.PI);
         this.radius = radius;
     }
 
-    public SphericCoordinate(CartesianCoordinate c) {
+    public SphericCoordinate(CartesianCoordinate c) throws CoordinateException {
 
         // precondition
         assert c.assertClassInvariants();
@@ -80,7 +80,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     public void setLocation(Location location) { this.location = location; }
 
-    public double calculateCentralAngle(SphericCoordinate other_sphericCoordinate){
+    public double calculateCentralAngle(SphericCoordinate other_sphericCoordinate) throws CoordinateException{
 
         // preconditions
         assert other_sphericCoordinate != null;
@@ -98,19 +98,19 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
     @Override
-    protected boolean assertClassInvariants () {
+    protected boolean assertClassInvariants() {
         return 0 <= this.theta && this.theta <= (2 * Math.PI)
                 && 0 <= this.phi && this.phi <= (2 * Math.PI)
                 && 0 <= this.radius && this.radius <= Double.MAX_VALUE;
     }
     
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
+    public CartesianCoordinate asCartesianCoordinate() throws CoordinateException {
         return new CartesianCoordinate(this);
     }
 
     @Override
-    public SphericCoordinate asSphericCoordinate() {
+    public SphericCoordinate asSphericCoordinate() throws CoordinateException {
         return this;
     }
 

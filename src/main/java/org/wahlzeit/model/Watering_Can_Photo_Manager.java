@@ -21,11 +21,11 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
         photoTagCollector = Watering_Can_Photo_Factory.getInstance().createPhotoTagCollector();
     }
 
-    public static Watering_Can_Photo getWateringCanPhoto(String id){
+    public static Watering_Can_Photo getWateringCanPhoto(String id) {
         return getWateringCanPhoto(PhotoId.getIdFromString(id));
     }
 
-    public static Watering_Can_Photo getWateringCanPhoto(PhotoId id){
+    public static Watering_Can_Photo getWateringCanPhoto(PhotoId id) {
         return instance.getPhotoFromId(id);
     }
 
@@ -64,7 +64,7 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
      *
      * Load all persisted photos. Executed when Wahlzeit is restarted.
      */
-    public void addPhoto(Watering_Can_Photo photo) {
+    public void addPhoto(Watering_Can_Photo photo) throws CoordinateException {
         PhotoId id = photo.getId();
         assertIsNewPhoto(id);
         doAddPhoto(photo);

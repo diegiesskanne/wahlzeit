@@ -24,7 +24,7 @@ public class PhotoTest {
     }
 
     @Test
-    public void testGet() {
+    public void testGet() throws CoordinateException{
 
         photo1.location = new Location(new CartesianCoordinate(42.0, 420.0, -42.0));
         photo2.location = new Location(new SphericCoordinate(0.2, 0.4, 33.0));

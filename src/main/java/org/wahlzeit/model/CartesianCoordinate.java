@@ -18,13 +18,14 @@ public class CartesianCoordinate extends AbstractCoordinate {
     // may be discarded
     private Location location;
 
-    public CartesianCoordinate(double x, double y, double z){
+    public CartesianCoordinate(double x, double y, double z) throws CoordinateException{
+        // if (x < 0 || y < 0 || z < 0)
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public CartesianCoordinate(SphericCoordinate sphericCoordinate) {
+    public CartesianCoordinate(SphericCoordinate sphericCoordinate) throws CoordinateException {
 
         // precondition
         assert sphericCoordinate.assertClassInvariants();
@@ -74,7 +75,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     public void setLocation(Location location) { this.location = location; }
 
-    public int cartesianHash(){
+    public int cartesianHash() throws CoordinateException {
 
         // precondition
         assert assertClassInvariants();
@@ -84,7 +85,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
                 this.getLocation());
     }
 
-    public boolean checkEquality(CartesianCoordinate cartesianCoordinate){
+    public boolean checkEquality(CartesianCoordinate cartesianCoordinate) throws CoordinateException{
 
         // preconditions
         assert cartesianCoordinate != null;
@@ -98,7 +99,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
         return Math.abs(delta_x) < max_delta && Math.abs(delta_y) < max_delta && Math.abs(delta_z) < max_delta;
     }
 
-    public double getDistance(CartesianCoordinate cartesian_coordinate){
+    public double getDistance(CartesianCoordinate cartesian_coordinate) throws CoordinateException{
 
         // preconditions
         assert cartesian_coordinate != null;
@@ -141,13 +142,13 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
+    public CartesianCoordinate asCartesianCoordinate() throws CoordinateException {
         return this;
     }
 
 
     @Override
-    public SphericCoordinate asSphericCoordinate() {
+    public SphericCoordinate asSphericCoordinate() throws CoordinateException {
         return new SphericCoordinate(this);
     }
 

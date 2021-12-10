@@ -5,15 +5,15 @@ import java.sql.SQLException;
 
 public interface Coordinate {
 
-    CartesianCoordinate asCartesianCoordinate();
+    CartesianCoordinate asCartesianCoordinate() throws CoordinateException;
 
-    double getCartesianDistance(Coordinate coordinate) throws IllegalArgumentException;
+    double getCartesianDistance(Coordinate coordinate) throws IllegalArgumentException, CoordinateException;
 
-    SphericCoordinate asSphericCoordinate();
+    SphericCoordinate asSphericCoordinate() throws CoordinateException;
 
-    double getCentralAngle(Coordinate coordinate) throws IllegalArgumentException;
+    double getCentralAngle(Coordinate coordinate) throws IllegalArgumentException, CoordinateException;
 
-    boolean isEqual(Coordinate coordinate);
+    boolean isEqual(Coordinate coordinate) throws CoordinateException;
 
     void writeOn(ResultSet resultSet) throws SQLException;
 

@@ -307,7 +307,13 @@ public class Photo extends DataObject {
 	}
 
 	public String format_location(Location l){
-		return String.format("X=%f Y=%f Z=%f", l.getCoordinate().asCartesianCoordinate().getX(), l.getCoordinate().asCartesianCoordinate().getY(), l.getCoordinate().asCartesianCoordinate().getZ());
+		String a = "";
+		try {
+			a = String.format("X=%f Y=%f Z=%f", l.getCoordinate().asCartesianCoordinate().getX(), l.getCoordinate().asCartesianCoordinate().getY(), l.getCoordinate().asCartesianCoordinate().getZ());
+		}catch (CoordinateException ex){
+			ex.printStackTrace();
+		}
+		return a;
 	}
 
 	/**

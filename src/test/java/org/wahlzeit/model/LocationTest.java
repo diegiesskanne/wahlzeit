@@ -17,7 +17,7 @@ public class LocationTest {
     private Location location;
 
     @Before
-    public void initLocation() {
+    public void initLocation() throws CoordinateException {
         location = new Location(new CartesianCoordinate(42.0, 420.0, -42.0));
     }
 
@@ -30,7 +30,7 @@ public class LocationTest {
     }
 
     @Test
-    public void testGetter() {
+    public void testGetter() throws CoordinateException{
 
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(42.0, 420.0, -42.0);
 

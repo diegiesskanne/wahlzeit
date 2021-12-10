@@ -21,7 +21,7 @@ public class CoordinateTest {
     private CartesianCoordinate cartesianCoordinate4;
 
     @Before
-    public void initCoordinates() {
+    public void initCoordinates() throws CoordinateException{
         cartesianCoordinate1 = new CartesianCoordinate(-2.0, 0.0, 3.0);
         cartesianCoordinate2 = new CartesianCoordinate(0.3333, -(2.0 / 3.0), 24);
         cartesianCoordinate3 = new CartesianCoordinate(0.0, 1243.0, 42.0);
@@ -39,7 +39,7 @@ public class CoordinateTest {
     }
 
     @Test
-    public void testGetter() {
+    public void testGetter() throws CoordinateException{
 
         // test negative + X
         assertEquals(-2.0, cartesianCoordinate1.getX(), 0.0);
@@ -53,7 +53,7 @@ public class CoordinateTest {
     }
 
     @Test
-    public void testSet_and_Equal() {
+    public void testSet_and_Equal() throws CoordinateException{
 
         // create new coordinate and change its values
         CartesianCoordinate test_Cartesian_coordinate = new CartesianCoordinate(3.0, 2.0, 1.0);
@@ -77,7 +77,7 @@ public class CoordinateTest {
     }
 
     @Test
-    public void testGetDistance() {
+    public void testGetDistance() throws CoordinateException{
 
         // test with positive and negative x,y,z values
         CartesianCoordinate test_Cartesian_coordinate_1 = new CartesianCoordinate(1.0, 3.0, 42.0);
@@ -100,7 +100,7 @@ public class CoordinateTest {
     }
 
     @Test
-    public void testPersistence() throws SQLException {
+    public void testPersistence() throws SQLException, CoordinateException {
 
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(0.0, 0.0, 7.0);
         SphericCoordinate sphericCoordinate = new SphericCoordinate(0.10, 0.20, 3.0);
@@ -122,7 +122,7 @@ public class CoordinateTest {
     }
 
     @Test
-    public void testConversion() {
+    public void testConversion() throws CoordinateException{
 
         SphericCoordinate sphericCoordinate1 = new SphericCoordinate(cartesianCoordinate4);
         SphericCoordinate sphericCoordinate2 = new SphericCoordinate(0.93, 0.79, 7.07);
@@ -143,7 +143,7 @@ public class CoordinateTest {
     }
 
     @Test
-    public void testDistance() {
+    public void testDistance() throws CoordinateException{
 
         SphericCoordinate sphericCoordinate2 = new SphericCoordinate(0.93, 0.79, 7.07);
         SphericCoordinate sphericCoordinate3 = new SphericCoordinate(0.23, 0.41, 15.02);
@@ -158,7 +158,7 @@ public class CoordinateTest {
     }
 
     @Test
-    public void testCentralAngle() {
+    public void testCentralAngle() throws CoordinateException{
 
         SphericCoordinate sphericCoordinate1 = new SphericCoordinate(1.2, 0.45, 3.14);
         SphericCoordinate sphericCoordinate2 = new SphericCoordinate(0.6, 0.45, 3.14);
@@ -185,7 +185,7 @@ public class CoordinateTest {
     }
 
     @Test
-    public void testIsEqual() {
+    public void testIsEqual() throws CoordinateException{
         SphericCoordinate sphericCoordinate1 = new SphericCoordinate(2*Math.PI, 0.6, 3.14);
         SphericCoordinate sphericCoordinate2 = new SphericCoordinate(6*Math.PI, 0.6, 3.14);
 
@@ -207,7 +207,7 @@ public class CoordinateTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void testNullSafetyGCA() {
+    public void testNullSafetyGCA() throws CoordinateException {
         Coordinate coordinate1 = new SphericCoordinate(32.0, 34.0, 13.0);
 
         coordinate1.getCentralAngle(null);
@@ -215,9 +215,14 @@ public class CoordinateTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void testNullSafetyGCD() {
+    public void testNullSafetyGCD() throws CoordinateException {
         Coordinate coordinate2 = new CartesianCoordinate(-2.0, 24.0, 13.0);
 
         coordinate2.getCartesianDistance(null);
+    }
+
+    @Test (expected = CoordinateException.class)
+    public void testNaNArgument() throws CoordinateException {
+        Coordinate coordinate1 = new CartesianCoordinate(Double.NaN, 2.0, 3.0);
     }
 }

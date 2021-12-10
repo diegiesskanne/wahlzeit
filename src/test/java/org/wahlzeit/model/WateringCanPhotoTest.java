@@ -48,7 +48,7 @@ public class WateringCanPhotoTest {
     }
 
     @Test
-    public void testWateringCanPhoto() throws SQLException {
+    public void testWateringCanPhoto() throws SQLException, CoordinateException{
 
         Watering_Can_Photo wcphoto3 = initPhotoMock(resultSetMock);
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(4.0, 2.0, 0.0);

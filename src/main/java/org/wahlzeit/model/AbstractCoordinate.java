@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public abstract class AbstractCoordinate extends DataObject implements Coordinate {
 
     @Override
-    public double getCentralAngle(Coordinate coordinate){
+    public double getCentralAngle(Coordinate coordinate) throws CoordinateException{
 
         // preconditions
         if (coordinate == null) throw new IllegalArgumentException("coordinate is null");
@@ -27,7 +27,7 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     }
 
     @Override
-    public boolean isEqual(Coordinate another_coordinate){
+    public boolean isEqual(Coordinate another_coordinate) throws CoordinateException{
 
         // precondition
         this.assertClassInvariants();
@@ -40,7 +40,7 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     }
 
     @Override
-    public double getCartesianDistance(Coordinate coordinate) {
+    public double getCartesianDistance(Coordinate coordinate) throws CoordinateException{
 
         // precondition
         if (coordinate == null) throw new IllegalArgumentException("coordinate is null");
@@ -57,20 +57,34 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
     @Override
     public int hashCode() {
-        return this.asCartesianCoordinate().cartesianHash();
+        try {
+            return this.asCartesianCoordinate().cartesianHash();
+        } catch (CoordinateException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
 
         // precondition
-        assertClassInvariants();
+        try {
+            assertClassInvariants();
+        } catch (CoordinateException e) {
+            e.printStackTrace();
+        }
 
         if ((o instanceof Coordinate)){
-            return isEqual((Coordinate) o);
+            try {
+                return isEqual((Coordinate) o);
+            } catch (CoordinateException e) {
+                e.printStackTrace();
+            }
         }else{
             return false;
         }
+        return false;
     }
 
     @Override
@@ -85,10 +99,10 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
     // Abstract Methods to be implemented in the subclasses
     @Override
-    public abstract SphericCoordinate asSphericCoordinate();
+    public abstract SphericCoordinate asSphericCoordinate() throws CoordinateException;
 
     @Override
-    public abstract CartesianCoordinate asCartesianCoordinate();
+    public abstract CartesianCoordinate asCartesianCoordinate() throws CoordinateException;
 
     @Override
     public abstract void readFrom(ResultSet resultSet) throws SQLException;
@@ -96,5 +110,5 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     @Override
     public abstract void writeOn(ResultSet resultSet) throws SQLException;
 
-    protected abstract boolean assertClassInvariants();
+    protected abstract boolean assertClassInvariants() throws CoordinateException;
 }
