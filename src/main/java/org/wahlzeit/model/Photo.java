@@ -108,6 +108,7 @@ public class Photo extends DataObject {
 	 * @methodtype constructor
 	 */
 	public Photo(PhotoId myId) {
+		if (myId == null) throw new NullPointerException("myId is null");
 		id = myId;
 		
 		incWriteCount();
@@ -118,6 +119,7 @@ public class Photo extends DataObject {
 	 * @methodtype constructor
 	 */
 	public Photo(ResultSet rset) throws SQLException {
+		if (rset == null) throw new NullPointerException("rset is null");
 		readFrom(rset);
 	}
 
@@ -133,6 +135,7 @@ public class Photo extends DataObject {
 	 * 
 	 */
 	public void readFrom(ResultSet rset) throws SQLException {
+		if (rset == null) throw new NullPointerException("rset is null");
 		id = PhotoId.getIdFromInt(rset.getInt("id"));
 
 		ownerId = rset.getInt("owner_id");
@@ -155,6 +158,8 @@ public class Photo extends DataObject {
 		creationTime = rset.getLong("creation_time");
 		if (location != null) {
 			this.location.readFrom(rset);
+		}else{
+			throw new NullPointerException("ResultSet is null");
 		}
 
 		maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
@@ -164,7 +169,7 @@ public class Photo extends DataObject {
 	 * 
 	 */
 	public void writeOn(ResultSet rset) throws SQLException {
-
+		if (rset == null) throw new NullPointerException("rset is null");
 		rset.updateInt("id", id.asInt());
 		rset.updateInt("owner_id", ownerId);
 		rset.updateString("owner_name", ownerName);
@@ -181,6 +186,8 @@ public class Photo extends DataObject {
 		rset.updateLong("creation_time", creationTime);
 		if(this.location != null) {
 			this.location.writeOn(rset);
+		}else{
+			throw new NullPointerException("ResultSet is null");
 		}
 	}
 
@@ -196,6 +203,7 @@ public class Photo extends DataObject {
 	 * 
 	 */
 	public void writeId(PreparedStatement stmt, int pos) throws SQLException {
+		if (stmt == null) throw new NullPointerException("stmt is null");
 		stmt.setInt(pos, id.asInt());
 	}
 	
@@ -246,6 +254,7 @@ public class Photo extends DataObject {
 	 * @methodtype get
 	 */
 	public String getSummary(ModelConfig cfg) {
+		if (cfg == null) throw new NullPointerException("cfg is null");
 		return cfg.asPhotoSummary(ownerName);
 	}
 
@@ -287,6 +296,7 @@ public class Photo extends DataObject {
 	 * @methodtype set
 	 */
 	public void setOwnerEmailAddress(EmailAddress newEmailAddress) {
+		if (newEmailAddress == null) throw new NullPointerException("newEmailAddress is null");
 		ownerEmailAddress = newEmailAddress;
 		incWriteCount();
 	}
@@ -302,6 +312,7 @@ public class Photo extends DataObject {
 	 * 
 	 */
 	public void setOwnerLanguage(Language newLanguage) {
+		if (newLanguage == null) throw new NullPointerException("newLanguage is null");
 		ownerLanguage = newLanguage;
 		incWriteCount();
 	}
@@ -329,6 +340,7 @@ public class Photo extends DataObject {
 	 * @methodtype set
 	 */
 	public void setOwnerHomePage(URL newHomePage) {
+		if (newHomePage == null) throw new NullPointerException("newHomePage is null");
 		ownerHomePage = newHomePage;
 		incWriteCount();
 	}
@@ -338,6 +350,7 @@ public class Photo extends DataObject {
 	 * @methodtype boolean-query
 	 */
 	public boolean hasSameOwner(Photo photo) {
+		if (photo == null) throw new NullPointerException("photo is null");
 		return photo.getOwnerEmailAddress().equals(ownerEmailAddress);
 	}
 
@@ -424,6 +437,7 @@ public class Photo extends DataObject {
 	 * @methodtype get
 	 */
 	public String getPraiseAsString(ModelConfig cfg) {
+		if (cfg == null) throw new NullPointerException("cfg is null");
 		return cfg.asPraiseString(getPraise());
 	}
 	
@@ -457,6 +471,7 @@ public class Photo extends DataObject {
 	 * @methodtype set
 	 */
 	public void setStatus(PhotoStatus newStatus) {
+		if (newStatus == null) throw new NullPointerException("newStatus is null");
 		status = newStatus;
 		incWriteCount();
 	}
@@ -482,6 +497,7 @@ public class Photo extends DataObject {
 	 * @methodtype set
 	 */
 	public void setTags(Tags newTags) {
+		if (newTags == null) throw new NullPointerException("newTags is null");
 		tags = newTags;
 		incWriteCount();
 	}

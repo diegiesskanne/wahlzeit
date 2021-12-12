@@ -36,6 +36,7 @@ public class Watering_Can_Photo_Factory extends PhotoFactory {
     }
 
     public Watering_Can_Photo createWateringCanPhoto(PhotoId id){
+        if (id == null) throw new IllegalArgumentException("id should not be null");
         return new Watering_Can_Photo(id);
     }
 

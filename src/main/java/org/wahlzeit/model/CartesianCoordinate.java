@@ -18,26 +18,32 @@ public class CartesianCoordinate extends AbstractCoordinate {
     // may be discarded
     private Location location;
 
-    public CartesianCoordinate(double x, double y, double z) throws CoordinateException{
-        // if (x < 0 || y < 0 || z < 0)
+    public CartesianCoordinate(double x, double y, double z) throws CoordinateException {
+
+        if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)) throw new CoordinateException("A value is not a number");
         this.x = x;
         this.y = y;
         this.z = z;
+        assertClassInvariants();
     }
 
     public CartesianCoordinate(SphericCoordinate sphericCoordinate) throws CoordinateException {
 
-        // precondition
-        assert sphericCoordinate.assertClassInvariants();
+        try {
+            // precondition
+            sphericCoordinate.assertClassInvariants();
 
-        x = sphericCoordinate.getRadius() * Math.sin(sphericCoordinate.getTheta()) * Math.cos(sphericCoordinate.getPhi());
+            x = sphericCoordinate.getRadius() * Math.sin(sphericCoordinate.getTheta()) * Math.cos(sphericCoordinate.getPhi());
 
-        y = sphericCoordinate.getRadius() * Math.sin(sphericCoordinate.getTheta()) * Math.sin(sphericCoordinate.getPhi());
+            y = sphericCoordinate.getRadius() * Math.sin(sphericCoordinate.getTheta()) * Math.sin(sphericCoordinate.getPhi());
 
-        z = sphericCoordinate.getRadius() * Math.cos(sphericCoordinate.getTheta());
+            z = sphericCoordinate.getRadius() * Math.cos(sphericCoordinate.getTheta());
 
-        // postcondition
-        assert assertClassInvariants();
+            // postcondition
+            assertClassInvariants();
+        }catch (CoordinateException ex){
+            throw new CoordinateException("There is something wrong, when creating this Coordinate!", ex);
+        }
 
     }
 
@@ -78,7 +84,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
     public int cartesianHash() throws CoordinateException {
 
         // precondition
-        assert assertClassInvariants();
+        assertClassInvariants();
 
         return Objects.hash(
                 this.getX(), this.getY(), this.getZ(),
@@ -89,31 +95,45 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
         // preconditions
         assert cartesianCoordinate != null;
-        assert assertClassInvariants();
+        try {
 
-        double max_delta = 0.001;
-        double delta_x = this.getX() - cartesianCoordinate.getX();
-        double delta_y = this.getY() - cartesianCoordinate.getY();
-        double delta_z = this.getZ() - cartesianCoordinate.getZ();
+            assertClassInvariants();
 
-        return Math.abs(delta_x) < max_delta && Math.abs(delta_y) < max_delta && Math.abs(delta_z) < max_delta;
+            double max_delta = 0.001;
+            double delta_x = this.getX() - cartesianCoordinate.getX();
+            double delta_y = this.getY() - cartesianCoordinate.getY();
+            double delta_z = this.getZ() - cartesianCoordinate.getZ();
+
+            return Math.abs(delta_x) < max_delta && Math.abs(delta_y) < max_delta && Math.abs(delta_z) < max_delta;
+        }catch (CoordinateException ex){
+            throw new CoordinateException("There is something wrong with the Coordinates!", ex);
+        }
     }
 
     public double getDistance(CartesianCoordinate cartesian_coordinate) throws CoordinateException{
 
+
         // preconditions
         assert cartesian_coordinate != null;
-        assert assertClassInvariants();
+        try {
 
-        double squared_x = Math.pow((cartesian_coordinate.x - this.x), 2);
-        double squared_y = Math.pow((cartesian_coordinate.y - this.y), 2);
-        double squared_z = Math.pow((cartesian_coordinate.z - this.z), 2);
+            assertClassInvariants();
 
-        return Math.sqrt(squared_x + squared_y + squared_z);
+            double squared_x = Math.pow((cartesian_coordinate.x - this.x), 2);
+            double squared_y = Math.pow((cartesian_coordinate.y - this.y), 2);
+            double squared_z = Math.pow((cartesian_coordinate.z - this.z), 2);
+
+            return Math.sqrt(squared_x + squared_y + squared_z);
+        }catch (CoordinateException ex){
+            throw new CoordinateException("There is something wrong with the Coordinates!", ex);
+        }
     }
 
-    protected boolean assertClassInvariants() {
-        return this.x <= Double.MAX_VALUE && this.y <= Double.MAX_VALUE && this.z <= Double.MAX_VALUE;
+    protected void assertClassInvariants() throws CoordinateException {
+        if(this.x > Double.MAX_VALUE || this.y > Double.MAX_VALUE || this.z > Double.MAX_VALUE){
+            throw new CoordinateException("The values are not admissible!");
+        }
+        if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)) throw new CoordinateException("A value is not a number");
     }
 
     @Override
@@ -121,7 +141,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
         // preconditions
         assert resultSet != null;
-        assert assertClassInvariants();
 
         resultSet.getDouble("coordinate_x");
         resultSet.getDouble("coordinate_y");
@@ -134,7 +153,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
         // preconditions
         assert resultSet != null;
-        assert assertClassInvariants();
 
         resultSet.updateDouble("coordinate_x", this.getX());
         resultSet.updateDouble("coordinate_y", this.getY());

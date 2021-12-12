@@ -1,11 +1,7 @@
 package org.wahlzeit.model;
 
-import org.wahlzeit.services.DataObject;
-
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public class SphericCoordinate extends AbstractCoordinate {
     
@@ -19,32 +15,39 @@ public class SphericCoordinate extends AbstractCoordinate {
     private Location location;
 
     public SphericCoordinate(double phi, double theta, double radius) throws CoordinateException {
+
+        if(Double.isNaN(phi) || Double.isNaN(theta) || Double.isNaN(radius)) throw new CoordinateException("A coordinate value is NaN");
         this.phi = phi % (2 * Math.PI);
         this.theta = theta % (2 * Math.PI);
         this.radius = radius;
+        assertClassInvariants();
     }
 
     public SphericCoordinate(CartesianCoordinate c) throws CoordinateException {
 
-        // precondition
-        assert c.assertClassInvariants();
+        try {
+            // precondition
+            c.assertClassInvariants();
 
-        radius = Math.sqrt(Math.pow(c.getX(), 2) + Math.pow(c.getY(), 2) + Math.pow(c.getZ(), 2));
+            radius = Math.sqrt(Math.pow(c.getX(), 2) + Math.pow(c.getY(), 2) + Math.pow(c.getZ(), 2));
 
-        if(c.getZ() != 0) {
-            theta = Math.atan(Math.sqrt(Math.pow(c.getX(), 2) + Math.pow(c.getY(), 2)) / c.getZ());
+            if (c.getZ() != 0) {
+                theta = Math.atan(Math.sqrt(Math.pow(c.getX(), 2) + Math.pow(c.getY(), 2)) / c.getZ());
+            }
+
+            if (c.getX() > 0) {
+                phi = Math.atan(c.getY() / c.getX());
+            } else if (c.getX() < 0) {
+                phi = Math.atan(c.getY() / c.getX()) + Math.PI;
+            } else {
+                phi = Math.PI / 2;
+            }
+
+            // postcondition
+            assertClassInvariants();
+        }catch (CoordinateException ex){
+            throw new CoordinateException("Something is wrong with the coordinates!", ex);
         }
-
-        if (c.getX() > 0) {
-            phi = Math.atan(c.getY() / c.getX());
-        }else if (c.getX() < 0) {
-            phi = Math.atan(c.getY() / c.getX()) + Math.PI;
-        }else {
-            phi = Math.PI / 2;
-        }
-
-        // postcondition
-        assert assertClassInvariants();
 
     }
 
@@ -84,24 +87,31 @@ public class SphericCoordinate extends AbstractCoordinate {
 
         // preconditions
         assert other_sphericCoordinate != null;
-        assert assertClassInvariants();
+        try {
+            assertClassInvariants();
 
-        double theta = this.getTheta();
+            double theta = this.getTheta();
 
-        double phi = this.getPhi();
+            double phi = this.getPhi();
 
-        return Math.acos(
-                Math.sin(phi) * Math.sin(other_sphericCoordinate.getPhi())
-                        + Math.cos(phi) * Math.cos(other_sphericCoordinate.getPhi())
-                        * Math.cos(Math.abs(theta-other_sphericCoordinate.getTheta()))
-        );
+            return Math.acos(
+                    Math.sin(phi) * Math.sin(other_sphericCoordinate.getPhi())
+                            + Math.cos(phi) * Math.cos(other_sphericCoordinate.getPhi())
+                            * Math.cos(Math.abs(theta - other_sphericCoordinate.getTheta()))
+            );
+        }catch (CoordinateException ex){
+            throw new CoordinateException("There is something wrong with the coordinates!", ex);
+        }
     }
 
     @Override
-    protected boolean assertClassInvariants() {
-        return 0 <= this.theta && this.theta <= (2 * Math.PI)
-                && 0 <= this.phi && this.phi <= (2 * Math.PI)
-                && 0 <= this.radius && this.radius <= Double.MAX_VALUE;
+    protected void assertClassInvariants() throws CoordinateException{
+        if(this.theta < 0 || this.theta > (2 * Math.PI)
+                || this.phi < 0 || this.phi > (2 * Math.PI)
+                || this.radius < 0 || this.radius > Double.MAX_VALUE){
+            throw new CoordinateException("The values are not admissible!");
+        }
+        if (Double.isNaN(this.theta) || Double.isNaN(this.phi) || Double.isNaN(this.radius)) throw new CoordinateException("A coordinate value is NaN!");
     }
     
     @Override
@@ -120,7 +130,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 
         // preconditions
         assert resultSet != null;
-        assertClassInvariants();
 
         resultSet.getDouble("coordinate_theta");
         resultSet.getDouble("coordinate_phi");
@@ -132,7 +141,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 
         // preconditions
         assert resultSet != null;
-        assertClassInvariants();
 
         resultSet.updateDouble("coordinate_theta", this.getTheta());
         resultSet.updateDouble("coordinate_phi", this.getPhi());

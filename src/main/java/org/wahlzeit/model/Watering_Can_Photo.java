@@ -59,6 +59,7 @@ public class Watering_Can_Photo extends Photo {
             color = (Color)field.get(null);
         } catch (Exception e) {
             color = null; // Not defined
+            throw new NullPointerException("color is null");
         }
         this.color = color;
 
