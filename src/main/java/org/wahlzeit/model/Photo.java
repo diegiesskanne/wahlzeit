@@ -158,8 +158,6 @@ public class Photo extends DataObject {
 		creationTime = rset.getLong("creation_time");
 		if (location != null) {
 			this.location.readFrom(rset);
-		}else{
-			throw new NullPointerException("ResultSet is null");
 		}
 
 		maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
@@ -186,8 +184,6 @@ public class Photo extends DataObject {
 		rset.updateLong("creation_time", creationTime);
 		if(this.location != null) {
 			this.location.writeOn(rset);
-		}else{
-			throw new NullPointerException("ResultSet is null");
 		}
 	}
 
