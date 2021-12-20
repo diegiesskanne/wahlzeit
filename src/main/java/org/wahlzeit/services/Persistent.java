@@ -6,6 +6,8 @@
 package org.wahlzeit.services;
 
 
+import org.wahlzeit.model.CoordinateException;
+
 import java.sql.*;
 
 /**

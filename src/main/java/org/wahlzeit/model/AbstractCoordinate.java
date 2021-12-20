@@ -13,16 +13,21 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
         // preconditions
         if (coordinate == null) throw new IllegalArgumentException("coordinate is null");
-        this.assertClassInvariants();
+        try {
+            this.assertClassInvariants();
 
-        // convert to spheric and call implementation method
-        double centralAngle = this.asSphericCoordinate().calculateCentralAngle(coordinate.asSphericCoordinate());
+            // convert to spheric and call implementation method
+            double centralAngle = this.asSphericCoordinate().calculateCentralAngle(coordinate.asSphericCoordinate());
 
-        // postcondition
-        assert 0 <= centralAngle;
-        assert centralAngle <= (2 * Math.PI);
+            // postcondition
+            assert 0 <= centralAngle;
+            assert centralAngle <= (2 * Math.PI);
 
-        return centralAngle;
+            return centralAngle;
+
+        }catch(CoordinateException ex){
+            throw new CoordinateException("Something is wrong with the Coordinate!", ex);
+        }
 
     }
 
@@ -44,19 +49,25 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
         // precondition
         if (coordinate == null) throw new IllegalArgumentException("coordinate is null");
-        this.assertClassInvariants();
+        try {
 
-        // convert to cartesian and call implementation method
-        double cartesianDistance = this.asCartesianCoordinate().getDistance(coordinate.asCartesianCoordinate());
 
-        // postcondition
-        assert 0 <= cartesianDistance;
+            this.assertClassInvariants();
 
-        return cartesianDistance;
+            // convert to cartesian and call implementation method
+            double cartesianDistance = this.asCartesianCoordinate().getDistance(coordinate.asCartesianCoordinate());
+
+            // postcondition
+            assert 0 <= cartesianDistance;
+
+            return cartesianDistance;
+        }catch (CoordinateException ex){
+            throw new CoordinateException("Something is wrong with the Coordinates!", ex);
+        }
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(){
         try {
             return this.asCartesianCoordinate().cartesianHash();
         } catch (CoordinateException e) {
@@ -66,7 +77,7 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o){
 
         // precondition
         try {
@@ -110,5 +121,5 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     @Override
     public abstract void writeOn(ResultSet resultSet) throws SQLException;
 
-    protected abstract boolean assertClassInvariants() throws CoordinateException;
+    protected abstract void assertClassInvariants() throws CoordinateException;
 }

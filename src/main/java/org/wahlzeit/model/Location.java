@@ -12,6 +12,7 @@ public class Location extends DataObject {
     private final Coordinate coordinate;
 
     public Location(Coordinate coordinate) {
+        assert coordinate != null;
         this.coordinate = coordinate;
     }
 
@@ -26,11 +27,13 @@ public class Location extends DataObject {
 
     @Override
     public void readFrom(ResultSet resultSet) throws SQLException {
+        assert resultSet != null;
         coordinate.readFrom(resultSet);
     }
 
     @Override
     public void writeOn(ResultSet resultSet) throws SQLException {
+        assert resultSet != null;
         coordinate.writeOn(resultSet);
     }
 

@@ -22,10 +22,12 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
     }
 
     public static Watering_Can_Photo getWateringCanPhoto(String id) {
+        if (id == null) throw new IllegalArgumentException("id should not be null");
         return getWateringCanPhoto(PhotoId.getIdFromString(id));
     }
 
     public static Watering_Can_Photo getWateringCanPhoto(PhotoId id) {
+        if (id == null) throw new IllegalArgumentException("id should not be null");
         return instance.getPhotoFromId(id);
     }
 
@@ -52,6 +54,7 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
     }
 
     protected Watering_Can_Photo doGetPhotoFromId(PhotoId id) {
+        if (id == null) throw new IllegalArgumentException("id should not be null");
         return photoCache.get(id);
     }
 
@@ -64,7 +67,8 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
      *
      * Load all persisted photos. Executed when Wahlzeit is restarted.
      */
-    public void addPhoto(Watering_Can_Photo photo) throws CoordinateException {
+    public void addPhoto(Watering_Can_Photo photo) {
+        if (photo == null) throw new IllegalArgumentException("photo should not be null");
         PhotoId id = photo.getId();
         assertIsNewPhoto(id);
         doAddPhoto(photo);
@@ -83,6 +87,7 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
      * @methodproperties primitive
      */
     protected void doAddPhoto(Watering_Can_Photo myPhoto) {
+        if (myPhoto == null) throw new IllegalArgumentException("myPhoto should not be null");
         photoCache.put(myPhoto.getId(), myPhoto);
     }
 
@@ -90,6 +95,7 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
      *
      */
     public void savePhoto(Watering_Can_Photo photo) {
+        if (photo == null) throw new IllegalArgumentException("photo should not be null");
         try {
             PreparedStatement stmt = getUpdatingStatement("SELECT * FROM photos WHERE id = ?");
             updateObject(photo, stmt);
@@ -102,6 +108,7 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
      *
      */
     public Watering_Can_Photo getVisiblePhoto(PhotoFilter filter) {
+        if (filter == null) throw new IllegalArgumentException("filter should not be null");
         Watering_Can_Photo result = getPhotoFromFilter(filter);
 
         if(result == null) {
@@ -117,6 +124,7 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
      *
      */
     protected Watering_Can_Photo getPhotoFromFilter(PhotoFilter filter) {
+        if (filter == null) throw new IllegalArgumentException("filter should not be null");
         PhotoId id = filter.getRandomDisplayablePhotoId();
         Watering_Can_Photo result = getPhotoFromId(id);
         while((result != null) && !result.isVisible()) {
