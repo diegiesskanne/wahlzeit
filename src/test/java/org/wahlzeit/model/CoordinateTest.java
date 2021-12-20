@@ -39,6 +39,15 @@ public class CoordinateTest {
     }
 
     @Test
+    public void testMapExistence() throws CoordinateException {
+        SphericCoordinate s = new SphericCoordinate(1.3,1.4, 2.0);
+        CartesianCoordinate c = new CartesianCoordinate(s);
+
+        assertNotNull(CartesianCoordinate.cartesianCoordinateMap.get(c));
+
+    }
+
+    @Test
     public void testGetter() {
 
         // test X

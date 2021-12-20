@@ -39,6 +39,7 @@ public class SphericCoordinate extends AbstractCoordinate {
         this.phi = phi % (2 * Math.PI);
         this.theta = theta % (2 * Math.PI);
         this.radius = radius;
+
         assertClassInvariants();
     }
 
@@ -63,6 +64,8 @@ public class SphericCoordinate extends AbstractCoordinate {
             } else {
                 this.phi = Math.PI / 2;
             }
+
+            getSphericCoordinateObject(this.phi, this.theta, this.radius);
 
             // postcondition
             assertClassInvariants();

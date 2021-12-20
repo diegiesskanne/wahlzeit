@@ -42,6 +42,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
         this.x = x;
         this.y = y;
         this.z = z;
+
         assertClassInvariants();
     }
 
@@ -57,6 +58,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
             this.z = sphericCoordinate.getRadius() * Math.cos(sphericCoordinate.getTheta());
 
+            getCartesianCoordinateObject(this.x, this.y, this.z);
             // postcondition
             assertClassInvariants();
         }catch (CoordinateException ex){
