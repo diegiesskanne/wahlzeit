@@ -70,8 +70,8 @@ public class CoordinateTest {
         assertTrue(CartesianCoordinate.cartesianCoordinateMap.get(c1) == CartesianCoordinate.getCartesianCoordinateObject(42.0, 2.0, 1.0));
 
         // test isEqual + equals
-        assertTrue(cartesianCoordinate1.isEqual(CartesianCoordinate.getCartesianCoordinateObject(-2.0, 0.0, 3.0)));
-        assertTrue(cartesianCoordinate1.equals(CartesianCoordinate.getCartesianCoordinateObject(-2.0, 0.0, 3.0)));
+        assertTrue(cartesianCoordinate1.isEqual(CartesianCoordinate.getCartesianCoordinateObject(0.0, 0.0, 3.0)));
+        assertTrue(cartesianCoordinate1.equals(CartesianCoordinate.getCartesianCoordinateObject(0.0, 0.0, 3.0)));
 
     }
 
@@ -232,7 +232,7 @@ public class CoordinateTest {
 
     }
 
-    @Test (expected = AssertionError.class)
+    @Test (expected = CoordinateException.class)
     public void testNaNArgument() throws CoordinateException {
         CartesianCoordinate coordinate = CartesianCoordinate.getCartesianCoordinateObject(Double.NaN, 2.0, 3.0);
     }
