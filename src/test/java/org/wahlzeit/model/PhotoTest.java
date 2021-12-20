@@ -26,8 +26,8 @@ public class PhotoTest {
     @Test
     public void testGet() throws CoordinateException{
 
-        photo1.location = new Location(new CartesianCoordinate(42.0, 420.0, -42.0));
-        photo2.location = new Location(new SphericCoordinate(0.2, 0.4, 33.0));
+        photo1.location = new Location(CartesianCoordinate.getCartesianCoordinateObject(42.0, 420.0, -42.0));
+        photo2.location = new Location(SphericCoordinate.getSphericCoordinateObject(0.2, 0.4, 33.0));
         assertEquals(photo1.location.getCoordinate().asCartesianCoordinate().getX(), 42.0, 0.0);
         assertEquals(photo2.location.getCoordinate().asSphericCoordinate().getRadius(), 33.0, 0.0);
     }

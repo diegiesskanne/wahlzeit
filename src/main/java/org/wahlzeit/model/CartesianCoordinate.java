@@ -5,21 +5,39 @@ import org.wahlzeit.services.DataObject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class CartesianCoordinate extends AbstractCoordinate {
 
-    private double x;
+    private final double x;
 
-    private double y;
+    private final double y;
 
-    private double z;
+    private final double z;
 
     // may be discarded
     private Location location;
 
+    public static final HashMap<CartesianCoordinate, CartesianCoordinate> cartesianCoordinateMap = new HashMap<>();
+
+    public static CartesianCoordinate getCartesianCoordinateObject(double x, double y, double z) throws CoordinateException {
+        CartesianCoordinate coordinate = new CartesianCoordinate(x, y, z);
+
+        CartesianCoordinate rcoordinate = cartesianCoordinateMap.get(coordinate);
+        synchronized (Coordinate.class) {
+            if (rcoordinate == null) {
+                cartesianCoordinateMap.put(coordinate, coordinate);
+                return coordinate;
+            } else {
+                return rcoordinate;
+            }
+        }
+    }
+
     public CartesianCoordinate(double x, double y, double z) throws CoordinateException{
-        // if (x < 0 || y < 0 || z < 0)
+
         this.x = x;
         this.y = y;
         this.z = z;
@@ -30,11 +48,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
         // precondition
         assert sphericCoordinate.assertClassInvariants();
 
-        x = sphericCoordinate.getRadius() * Math.sin(sphericCoordinate.getTheta()) * Math.cos(sphericCoordinate.getPhi());
+        this.x = sphericCoordinate.getRadius() * Math.sin(sphericCoordinate.getTheta()) * Math.cos(sphericCoordinate.getPhi());
 
-        y = sphericCoordinate.getRadius() * Math.sin(sphericCoordinate.getTheta()) * Math.sin(sphericCoordinate.getPhi());
+        this.y = sphericCoordinate.getRadius() * Math.sin(sphericCoordinate.getTheta()) * Math.sin(sphericCoordinate.getPhi());
 
-        z = sphericCoordinate.getRadius() * Math.cos(sphericCoordinate.getTheta());
+        this.z = sphericCoordinate.getRadius() * Math.cos(sphericCoordinate.getTheta());
 
         // postcondition
         assert assertClassInvariants();
@@ -42,33 +60,33 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     public double getX() {
-        assert x <= Double.MAX_VALUE;
-        return x;
+        assert this.x <= Double.MAX_VALUE;
+        return this.x;
     }
 
     public double getY() {
-        assert y <= Double.MAX_VALUE;
-        return y;
+        assert this.y <= Double.MAX_VALUE;
+        return this.y;
     }
 
     public double getZ() {
-        assert z <= Double.MAX_VALUE;
-        return z;
+        assert this.z <= Double.MAX_VALUE;
+        return this.z;
     }
 
-    public void setX(double x) {
+    public CartesianCoordinate setX(double x) throws CoordinateException {
         assert x <= Double.MAX_VALUE;
-        this.x = x;
+        return getCartesianCoordinateObject(x, this.y, this.z);
     }
 
-    public void setY(double y) {
+    public CartesianCoordinate setY(double y) throws CoordinateException {
         assert y <= Double.MAX_VALUE;
-        this.y = y;
+        return getCartesianCoordinateObject(this.x, y, this.z);
     }
 
-    public void setZ(double z) {
+    public CartesianCoordinate setZ(double z) throws CoordinateException {
         assert z <= Double.MAX_VALUE;
-        this.z = z;
+        return getCartesianCoordinateObject(this.x, this.y, z);
     }
 
     public Location getLocation() { return location; }

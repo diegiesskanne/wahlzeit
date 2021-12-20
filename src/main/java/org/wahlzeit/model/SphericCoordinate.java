@@ -5,20 +5,39 @@ import org.wahlzeit.services.DataObject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class SphericCoordinate extends AbstractCoordinate {
     
-    private double phi;
+    private final double phi;
     
-    private double theta;
+    private final double theta;
     
-    private double radius;
+    private final double radius;
 
     // may be discarded
     private Location location;
 
+    public static final HashMap<SphericCoordinate, SphericCoordinate> sphericCoordinateMap = new HashMap<>();
+
+    public static SphericCoordinate getSphericCoordinateObject(double phi, double theta, double radius) throws CoordinateException {
+        SphericCoordinate coordinate = new SphericCoordinate(phi, theta, radius);
+
+        SphericCoordinate rcoordinate = sphericCoordinateMap.get(coordinate);
+        synchronized (Coordinate.class) {
+            if (rcoordinate == null) {
+                sphericCoordinateMap.put(coordinate, coordinate);
+                return coordinate;
+            } else {
+                return rcoordinate;
+            }
+        }
+    }
+
     public SphericCoordinate(double phi, double theta, double radius) throws CoordinateException {
+
         this.phi = phi % (2 * Math.PI);
         this.theta = theta % (2 * Math.PI);
         this.radius = radius;
@@ -29,18 +48,20 @@ public class SphericCoordinate extends AbstractCoordinate {
         // precondition
         assert c.assertClassInvariants();
 
-        radius = Math.sqrt(Math.pow(c.getX(), 2) + Math.pow(c.getY(), 2) + Math.pow(c.getZ(), 2));
+        this.radius = Math.sqrt(Math.pow(c.getX(), 2) + Math.pow(c.getY(), 2) + Math.pow(c.getZ(), 2));
 
         if(c.getZ() != 0) {
-            theta = Math.atan(Math.sqrt(Math.pow(c.getX(), 2) + Math.pow(c.getY(), 2)) / c.getZ());
+            this.theta = Math.atan(Math.sqrt(Math.pow(c.getX(), 2) + Math.pow(c.getY(), 2)) / c.getZ());
+        }else {
+            this.theta = 0;
         }
 
         if (c.getX() > 0) {
-            phi = Math.atan(c.getY() / c.getX());
+            this.phi = Math.atan(c.getY() / c.getX());
         }else if (c.getX() < 0) {
-            phi = Math.atan(c.getY() / c.getX()) + Math.PI;
+            this.phi = Math.atan(c.getY() / c.getX()) + Math.PI;
         }else {
-            phi = Math.PI / 2;
+            this.phi = Math.PI / 2;
         }
 
         // postcondition
@@ -49,32 +70,34 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
     public double getPhi() {
-        assert 0 <= phi;
-        assert phi <= (2 * Math.PI);
-        return phi;
+        assert 0 <= this.phi;
+        assert this.phi <= (2 * Math.PI);
+        return this.phi;
     }
 
     public double getTheta() {
-        assert 0 <= theta;
-        assert theta <= (2 * Math.PI);
-        return theta;
+        assert 0 <= this.theta;
+        assert this.theta <= (2 * Math.PI);
+        return this.theta;
     }
 
-    public double getRadius() { return radius; }
+    public double getRadius() { return this.radius; }
 
-    public void setPhi(double phi){
+    public SphericCoordinate setPhi(double phi) throws CoordinateException {
         assert 0 <= phi;
         assert phi <= (2 * Math.PI);
-        this.phi = phi;
+        return getSphericCoordinateObject(phi, this.theta, this.radius);
     }
 
-    public void setTheta(double theta){
+    public SphericCoordinate setTheta(double theta) throws CoordinateException {
         assert 0 <= theta;
         assert theta <= (2 * Math.PI);
-        this.theta = theta;
+        return getSphericCoordinateObject(this.phi, theta, this.radius);
     }
 
-    public void setRadius(double radius){ this.radius = radius; }
+    public SphericCoordinate setRadius(double radius) throws CoordinateException {
+        return getSphericCoordinateObject(this.phi, this.theta, radius);
+    }
 
     public Location getLocation() { return location; }
 
@@ -106,6 +129,7 @@ public class SphericCoordinate extends AbstractCoordinate {
     
     @Override
     public CartesianCoordinate asCartesianCoordinate() throws CoordinateException {
+
         return new CartesianCoordinate(this);
     }
 

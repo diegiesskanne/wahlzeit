@@ -22,10 +22,10 @@ public class CoordinateTest {
 
     @Before
     public void initCoordinates() throws CoordinateException{
-        cartesianCoordinate1 = new CartesianCoordinate(-2.0, 0.0, 3.0);
-        cartesianCoordinate2 = new CartesianCoordinate(0.3333, -(2.0 / 3.0), 24);
-        cartesianCoordinate3 = new CartesianCoordinate(0.0, 1243.0, 42.0);
-        cartesianCoordinate4 = new CartesianCoordinate(3.0, 4.0, 5.0);
+        cartesianCoordinate1 = CartesianCoordinate.getCartesianCoordinateObject(-2.0, 0.0, 3.0);
+        cartesianCoordinate2 = CartesianCoordinate.getCartesianCoordinateObject(0.3333, -(2.0 / 3.0), 24);
+        cartesianCoordinate3 = CartesianCoordinate.getCartesianCoordinateObject(0.0, 1243.0, 42.0);
+        cartesianCoordinate4 = CartesianCoordinate.getCartesianCoordinateObject(3.0, 4.0, 5.0);
     }
 
     @Test
@@ -56,23 +56,22 @@ public class CoordinateTest {
     public void testSet_and_Equal() throws CoordinateException{
 
         // create new coordinate and change its values
-        CartesianCoordinate test_Cartesian_coordinate = new CartesianCoordinate(3.0, 2.0, 1.0);
-        test_Cartesian_coordinate.setX(42.0);
-        test_Cartesian_coordinate.setY(42.0);
-        test_Cartesian_coordinate.setZ(42.0);
-        assertEquals(test_Cartesian_coordinate.getX(), test_Cartesian_coordinate.getY(), 0.0);
-        assertEquals(test_Cartesian_coordinate.getY(), test_Cartesian_coordinate.getZ(), 0.0);
+        CartesianCoordinate test_Cartesian_coordinate = CartesianCoordinate.getCartesianCoordinateObject(3.0, 2.0, 1.0);
 
-        // test setX with taking the old value into account
-        cartesianCoordinate1.setX(cartesianCoordinate1.getX() + 3);
+        CartesianCoordinate c1 = test_Cartesian_coordinate.setX(42.0);
 
-        // test setY
-        cartesianCoordinate1.setY(2.0);
+        // test if u get the right value for a specific key
+        assertTrue(CartesianCoordinate.cartesianCoordinateMap.get(test_Cartesian_coordinate) == test_Cartesian_coordinate);
 
-        // test previous set operation and isEqual + equals at the same time
-        assertTrue(cartesianCoordinate1.isEqual(new CartesianCoordinate(1.0, 2.0, 3.0)));
-        assertTrue(cartesianCoordinate1.equals(new CartesianCoordinate(1.0, 2.0, 3.0)));
-        assertFalse(cartesianCoordinate1.isEqual(null));
+        // object is already stored in map
+        assertTrue(CartesianCoordinate.getCartesianCoordinateObject(3.0, 2.0, 1.0) == CartesianCoordinate.cartesianCoordinateMap.get(test_Cartesian_coordinate));
+
+        // check if new object is also stored
+        assertTrue(CartesianCoordinate.cartesianCoordinateMap.get(c1) == CartesianCoordinate.getCartesianCoordinateObject(42.0, 2.0, 1.0));
+
+        // test isEqual + equals
+        assertTrue(cartesianCoordinate1.isEqual(CartesianCoordinate.getCartesianCoordinateObject(-2.0, 0.0, 3.0)));
+        assertTrue(cartesianCoordinate1.equals(CartesianCoordinate.getCartesianCoordinateObject(-2.0, 0.0, 3.0)));
 
     }
 
@@ -80,8 +79,8 @@ public class CoordinateTest {
     public void testGetDistance() throws CoordinateException{
 
         // test with positive and negative x,y,z values
-        CartesianCoordinate test_Cartesian_coordinate_1 = new CartesianCoordinate(1.0, 3.0, 42.0);
-        CartesianCoordinate test_Cartesian_coordinate_2 = new CartesianCoordinate(4.0, -1.0, -42.0);
+        CartesianCoordinate test_Cartesian_coordinate_1 = CartesianCoordinate.getCartesianCoordinateObject(1.0, 3.0, 42.0);
+        CartesianCoordinate test_Cartesian_coordinate_2 = CartesianCoordinate.getCartesianCoordinateObject(4.0, -1.0, -42.0);
 
         double distance = test_Cartesian_coordinate_1.getDistance(test_Cartesian_coordinate_2);
         double distance_the_other_way = test_Cartesian_coordinate_2.getDistance(test_Cartesian_coordinate_1);
@@ -91,9 +90,9 @@ public class CoordinateTest {
         assertEquals(distance, distance_the_other_way, 0.0);
 
         // test edge cases
-        CartesianCoordinate test_Cartesian_coordinate_3 = new CartesianCoordinate(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-        CartesianCoordinate test_Cartesian_coordinate_4 = new CartesianCoordinate(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
-        CartesianCoordinate test_Cartesian_coordinate_5 = new CartesianCoordinate(0.0, 0.0, 0.0);
+        CartesianCoordinate test_Cartesian_coordinate_3 = CartesianCoordinate.getCartesianCoordinateObject(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+        CartesianCoordinate test_Cartesian_coordinate_4 = CartesianCoordinate.getCartesianCoordinateObject(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
+        CartesianCoordinate test_Cartesian_coordinate_5 = CartesianCoordinate.getCartesianCoordinateObject(0.0, 0.0, 0.0);
 
         assertEquals(test_Cartesian_coordinate_3.getDistance(test_Cartesian_coordinate_5), Double.POSITIVE_INFINITY, 0.0);
         assertEquals(test_Cartesian_coordinate_4.getDistance(test_Cartesian_coordinate_5), 0.0, 0.0);
@@ -102,8 +101,8 @@ public class CoordinateTest {
     @Test
     public void testPersistence() throws SQLException, CoordinateException {
 
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(0.0, 0.0, 7.0);
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(0.10, 0.20, 3.0);
+        CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getCartesianCoordinateObject(0.0, 0.0, 7.0);
+        SphericCoordinate sphericCoordinate = SphericCoordinate.getSphericCoordinateObject(0.10, 0.20, 3.0);
         ResultSet testset = Mockito.mock(ResultSet.class);
 
         cartesianCoordinate.writeOn(testset);
@@ -125,7 +124,7 @@ public class CoordinateTest {
     public void testConversion() throws CoordinateException{
 
         SphericCoordinate sphericCoordinate1 = new SphericCoordinate(cartesianCoordinate4);
-        SphericCoordinate sphericCoordinate2 = new SphericCoordinate(0.93, 0.79, 7.07);
+        SphericCoordinate sphericCoordinate2 = SphericCoordinate.getSphericCoordinateObject(0.93, 0.79, 7.07);
         CartesianCoordinate cartesianCoordinate3 = new CartesianCoordinate(sphericCoordinate1);
 
         assertEquals(sphericCoordinate1.getPhi(), sphericCoordinate2.getPhi(), 0.01);
@@ -145,8 +144,8 @@ public class CoordinateTest {
     @Test
     public void testDistance() throws CoordinateException{
 
-        SphericCoordinate sphericCoordinate2 = new SphericCoordinate(0.93, 0.79, 7.07);
-        SphericCoordinate sphericCoordinate3 = new SphericCoordinate(0.23, 0.41, 15.02);
+        SphericCoordinate sphericCoordinate2 = SphericCoordinate.getSphericCoordinateObject(0.93, 0.79, 7.07);
+        SphericCoordinate sphericCoordinate3 = SphericCoordinate.getSphericCoordinateObject(0.23, 0.41, 15.02);
 
         double distance = sphericCoordinate2.getCartesianDistance(sphericCoordinate3);
         double self_distance = sphericCoordinate2.getCartesianDistance(sphericCoordinate2);
@@ -160,10 +159,10 @@ public class CoordinateTest {
     @Test
     public void testCentralAngle() throws CoordinateException{
 
-        SphericCoordinate sphericCoordinate1 = new SphericCoordinate(1.2, 0.45, 3.14);
-        SphericCoordinate sphericCoordinate2 = new SphericCoordinate(0.6, 0.45, 3.14);
-        SphericCoordinate sphericCoordinate3 = new SphericCoordinate(0.0, 0.0, 0.0);
-        SphericCoordinate sphericCoordinate4 = new SphericCoordinate(0.0, 0.0, 0.0);
+        SphericCoordinate sphericCoordinate1 = SphericCoordinate.getSphericCoordinateObject(1.2, 0.45, 3.14);
+        SphericCoordinate sphericCoordinate2 = SphericCoordinate.getSphericCoordinateObject(0.6, 0.45, 3.14);
+        SphericCoordinate sphericCoordinate3 = SphericCoordinate.getSphericCoordinateObject(0.0, 0.0, 0.0);
+        SphericCoordinate sphericCoordinate4 = SphericCoordinate.getSphericCoordinateObject(0.0, 0.0, 0.0);
 
         double a = sphericCoordinate1.getCentralAngle(sphericCoordinate2);
         double b = sphericCoordinate2.getCentralAngle(sphericCoordinate1);
@@ -186,14 +185,17 @@ public class CoordinateTest {
 
     @Test
     public void testIsEqual() throws CoordinateException{
-        SphericCoordinate sphericCoordinate1 = new SphericCoordinate(2*Math.PI, 0.6, 3.14);
-        SphericCoordinate sphericCoordinate2 = new SphericCoordinate(6*Math.PI, 0.6, 3.14);
+        SphericCoordinate sphericCoordinate1 = SphericCoordinate.getSphericCoordinateObject(2*Math.PI, 0.6, 3.14);
+        SphericCoordinate sphericCoordinate2 = SphericCoordinate.getSphericCoordinateObject(6*Math.PI, 0.6, 3.14);
 
-        SphericCoordinate sphericCoordinate3 = new SphericCoordinate(0.2, 0.0, 420.0);
-        SphericCoordinate sphericCoordinate4 = new SphericCoordinate(0.2, 2*Math.PI, 420.0);
+        SphericCoordinate sphericCoordinate3 = SphericCoordinate.getSphericCoordinateObject(0.2, 0.0, 420.0);
+        SphericCoordinate sphericCoordinate4 = SphericCoordinate.getSphericCoordinateObject(0.2, 2*Math.PI, 420.0);
 
-        Coordinate coordinate1 = new SphericCoordinate(32.0, 34.0, 13.0);
-        Coordinate coordinate2 = new SphericCoordinate(0.584, 2.584, 13.0);
+        SphericCoordinate coordinate5 = SphericCoordinate.getSphericCoordinateObject(0, 0, 0);
+        SphericCoordinate coordinate6 = SphericCoordinate.getSphericCoordinateObject(0, 0, 0);
+
+        Coordinate coordinate1 = SphericCoordinate.getSphericCoordinateObject(32.0, 34.0, 13.0);
+        Coordinate coordinate2 = SphericCoordinate.getSphericCoordinateObject(0.584, 2.584, 13.0);
 
         // check constructor functionality
         assertTrue(coordinate1.isEqual(coordinate2));
@@ -204,11 +206,14 @@ public class CoordinateTest {
         // theta is a manifold of 2 PI
         assertTrue(sphericCoordinate3.isEqual(sphericCoordinate4));
 
+        // small values should yield the same coordinate object
+        assertTrue(coordinate5 == coordinate6);
+
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void testNullSafetyGCA() throws CoordinateException {
-        Coordinate coordinate1 = new SphericCoordinate(32.0, 34.0, 13.0);
+        Coordinate coordinate1 = SphericCoordinate.getSphericCoordinateObject(32.0, 34.0, 13.0);
 
         coordinate1.getCentralAngle(null);
 
@@ -216,13 +221,14 @@ public class CoordinateTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void testNullSafetyGCD() throws CoordinateException {
-        Coordinate coordinate2 = new CartesianCoordinate(-2.0, 24.0, 13.0);
+        Coordinate coordinate2 = CartesianCoordinate.getCartesianCoordinateObject(-2.0, 24.0, 13.0);
 
         coordinate2.getCartesianDistance(null);
     }
 
-    @Test (expected = CoordinateException.class)
+    @Test (expected = AssertionError.class)
     public void testNaNArgument() throws CoordinateException {
-        Coordinate coordinate1 = new CartesianCoordinate(Double.NaN, 2.0, 3.0);
+        Coordinate coordinate1 = CartesianCoordinate.getCartesianCoordinateObject(Double.NaN, 2.0, 3.0);
     }
+
 }
