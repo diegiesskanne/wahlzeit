@@ -1,10 +1,17 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.services.SysLog;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@PatternInstance(
+        patternName = "Abstract Factory",
+        participants = {
+                "Concrete Factory"
+        }
+)
 public class Watering_Can_Photo_Factory extends PhotoFactory {
 
     private static Watering_Can_Photo_Factory instance = null;

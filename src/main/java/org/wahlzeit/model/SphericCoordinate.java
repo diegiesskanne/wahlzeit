@@ -1,11 +1,17 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.PatternInstance;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+@PatternInstance(
+        patternName = "Template Pattern",
+        participants = { "Concrete Class" }
+)
 public class SphericCoordinate extends AbstractCoordinate {
     
     private final double phi;

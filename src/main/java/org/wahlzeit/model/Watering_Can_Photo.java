@@ -1,5 +1,6 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.services.SysLog;
 
 import java.awt.*;
@@ -7,6 +8,15 @@ import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@PatternInstance(
+        patternName = "Mediator",
+        participants = { "Managed Object" }
+)
+
+@PatternInstance(
+        patternName = "Abstract Factory",
+        participants = { "Concrete Product" }
+)
 public class Watering_Can_Photo extends Photo {
 
     private Color color;

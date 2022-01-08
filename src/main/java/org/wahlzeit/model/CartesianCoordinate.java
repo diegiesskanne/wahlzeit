@@ -1,5 +1,6 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.services.DataObject;
 
 import java.sql.PreparedStatement;
@@ -9,6 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+@PatternInstance(
+        patternName = "Template Pattern",
+        participants = { "Concrete Class" }
+)
 public class CartesianCoordinate extends AbstractCoordinate {
 
     private final double x;

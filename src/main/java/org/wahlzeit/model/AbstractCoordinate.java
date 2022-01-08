@@ -1,11 +1,16 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.services.DataObject;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@PatternInstance(
+        patternName = "Template Pattern",
+        participants = { "Abstract Class" }
+)
 public abstract class AbstractCoordinate extends DataObject implements Coordinate {
 
     @Override

@@ -1,5 +1,6 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.main.ServiceMain;
 import org.wahlzeit.services.SysLog;
 
@@ -8,6 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+@PatternInstance(
+        patternName = "Mediator",
+        participants = { "Mediator" }
+)
 public class Watering_Can_Photo_Manager extends PhotoManager{
 
     protected static final Watering_Can_Photo_Manager instance = new Watering_Can_Photo_Manager();
