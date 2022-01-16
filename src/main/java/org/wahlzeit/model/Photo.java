@@ -12,7 +12,6 @@ import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
 
-
 /**
  * A photo represents a user-provided (uploaded) photo.
  */

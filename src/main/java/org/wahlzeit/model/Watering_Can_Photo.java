@@ -19,6 +19,8 @@ import java.sql.SQLException;
 )
 public class Watering_Can_Photo extends Photo {
 
+    public Watering_Can watering_can;
+
     private Color color;
 
     public Watering_Can_Photo_Manager manager;
