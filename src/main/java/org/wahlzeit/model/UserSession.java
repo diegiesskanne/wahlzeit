@@ -36,7 +36,7 @@ public class UserSession extends Session {
 	protected Client client = new Guest();
 	protected PhotoSize photoSize = PhotoSize.MEDIUM;
 	protected long confirmationCode = -1; // -1 means not set
-	protected PhotoFilter photoFilter = Watering_Can_Photo_Factory.getInstance().createPhotoFilter();
+	protected PhotoFilter photoFilter = WateringCanPhotoFactory.getInstance().createPhotoFilter();
 	protected Set praisedPhotos = new HashSet<Photo>();
 
 	/**

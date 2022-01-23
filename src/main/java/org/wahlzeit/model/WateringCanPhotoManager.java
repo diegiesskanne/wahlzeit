@@ -13,40 +13,40 @@ import java.util.*;
         patternName = "Mediator",
         participants = { "Mediator" }
 )
-public class Watering_Can_Photo_Manager extends PhotoManager{
+public class WateringCanPhotoManager extends PhotoManager{
 
-    protected static final Watering_Can_Photo_Manager instance = new Watering_Can_Photo_Manager();
+    protected static final WateringCanPhotoManager instance = new WateringCanPhotoManager();
 
     /**
      * In-memory cache for photos
      */
-    protected Map<PhotoId, Watering_Can_Photo> photoCache = new HashMap<PhotoId, Watering_Can_Photo>();
+    protected Map<PhotoId, WateringCanPhoto> photoCache = new HashMap<PhotoId, WateringCanPhoto>();
 
-    public Watering_Can_Photo_Manager(){
-        photoTagCollector = Watering_Can_Photo_Factory.getInstance().createPhotoTagCollector();
+    public WateringCanPhotoManager(){
+        photoTagCollector = WateringCanPhotoFactory.getInstance().createPhotoTagCollector();
     }
 
-    public static Watering_Can_Photo getWateringCanPhoto(String id) {
+    public static WateringCanPhoto getWateringCanPhoto(String id) {
         if (id == null) throw new IllegalArgumentException("id should not be null");
         return getWateringCanPhoto(PhotoId.getIdFromString(id));
     }
 
-    public static Watering_Can_Photo getWateringCanPhoto(PhotoId id) {
+    public static WateringCanPhoto getWateringCanPhoto(PhotoId id) {
         if (id == null) throw new IllegalArgumentException("id should not be null");
         return instance.getPhotoFromId(id);
     }
 
-    public Watering_Can_Photo getPhotoFromId(PhotoId id) {
+    public WateringCanPhoto getPhotoFromId(PhotoId id) {
         if (id.isNullId()) {
             return null;
         }
 
-        Watering_Can_Photo result = doGetPhotoFromId(id);
+        WateringCanPhoto result = doGetPhotoFromId(id);
 
         if (result == null) {
             try {
                 PreparedStatement stmt = getReadingStatement("SELECT * FROM photos WHERE id = ?");
-                result = (Watering_Can_Photo) readObject(stmt, id.asInt());
+                result = (WateringCanPhoto) readObject(stmt, id.asInt());
             } catch (SQLException sex) {
                 SysLog.logThrowable(sex);
             }
@@ -58,13 +58,13 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
         return result;
     }
 
-    protected Watering_Can_Photo doGetPhotoFromId(PhotoId id) {
+    protected WateringCanPhoto doGetPhotoFromId(PhotoId id) {
         if (id == null) throw new IllegalArgumentException("id should not be null");
         return photoCache.get(id);
     }
 
-    protected Watering_Can_Photo createObject(ResultSet resultSet) throws SQLException{
-        return Watering_Can_Photo_Factory.getInstance().createWateringCanPhoto(resultSet);
+    protected WateringCanPhoto createObject(ResultSet resultSet) throws SQLException{
+        return WateringCanPhotoFactory.getInstance().createWateringCanPhoto(resultSet);
     }
 
     /**
@@ -72,7 +72,7 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
      *
      * Load all persisted photos. Executed when Wahlzeit is restarted.
      */
-    public void addPhoto(Watering_Can_Photo photo) {
+    public void addPhoto(WateringCanPhoto photo) {
         if (photo == null) throw new IllegalArgumentException("photo should not be null");
         PhotoId id = photo.getId();
         assertIsNewPhoto(id);
@@ -91,7 +91,7 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
      * @methodtype command
      * @methodproperties primitive
      */
-    protected void doAddPhoto(Watering_Can_Photo myPhoto) {
+    protected void doAddPhoto(WateringCanPhoto myPhoto) {
         if (myPhoto == null) throw new IllegalArgumentException("myPhoto should not be null");
         photoCache.put(myPhoto.getId(), myPhoto);
     }
@@ -99,7 +99,7 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
     /**
      *
      */
-    public void savePhoto(Watering_Can_Photo photo) {
+    public void savePhoto(WateringCanPhoto photo) {
         if (photo == null) throw new IllegalArgumentException("photo should not be null");
         try {
             PreparedStatement stmt = getUpdatingStatement("SELECT * FROM photos WHERE id = ?");
@@ -112,9 +112,9 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
     /**
      *
      */
-    public Watering_Can_Photo getVisiblePhoto(PhotoFilter filter) {
+    public WateringCanPhoto getVisiblePhoto(PhotoFilter filter) {
         if (filter == null) throw new IllegalArgumentException("filter should not be null");
-        Watering_Can_Photo result = getPhotoFromFilter(filter);
+        WateringCanPhoto result = getPhotoFromFilter(filter);
 
         if(result == null) {
             java.util.List<PhotoId> list = getFilteredPhotoIds(filter);
@@ -128,10 +128,10 @@ public class Watering_Can_Photo_Manager extends PhotoManager{
     /**
      *
      */
-    protected Watering_Can_Photo getPhotoFromFilter(PhotoFilter filter) {
+    protected WateringCanPhoto getPhotoFromFilter(PhotoFilter filter) {
         if (filter == null) throw new IllegalArgumentException("filter should not be null");
         PhotoId id = filter.getRandomDisplayablePhotoId();
-        Watering_Can_Photo result = getPhotoFromId(id);
+        WateringCanPhoto result = getPhotoFromId(id);
         while((result != null) && !result.isVisible()) {
             id = filter.getRandomDisplayablePhotoId();
             result = getPhotoFromId(id);

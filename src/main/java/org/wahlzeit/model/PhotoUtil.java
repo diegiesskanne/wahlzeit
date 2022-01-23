@@ -22,7 +22,7 @@ public class PhotoUtil {
 	 * 
 	 */
 	public static Photo createPhoto(File source, PhotoId id) throws Exception {
-		Photo result = Watering_Can_Photo_Factory.getInstance().createPhoto(id);
+		Photo result = WateringCanPhotoFactory.getInstance().createPhoto(id);
 		
 		Image sourceImage = createImageFiles(source, id);
 

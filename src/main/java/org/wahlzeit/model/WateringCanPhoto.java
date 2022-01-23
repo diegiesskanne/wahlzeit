@@ -1,7 +1,6 @@
 package org.wahlzeit.model;
 
 import org.wahlzeit.annotations.PatternInstance;
-import org.wahlzeit.services.SysLog;
 
 import java.awt.*;
 import java.lang.reflect.Field;
@@ -17,19 +16,19 @@ import java.sql.SQLException;
         patternName = "Abstract Factory",
         participants = { "Concrete Product" }
 )
-public class Watering_Can_Photo extends Photo {
+public class WateringCanPhoto extends Photo {
 
-    public Watering_Can watering_can;
+    public WateringCan watering_can;
 
     private Color color;
 
-    public Watering_Can_Photo_Manager manager;
+    public WateringCanPhotoManager manager;
 
     /**
      * @methodtype constructor
      */
 
-    public Watering_Can_Photo(){
+    public WateringCanPhoto(){
         super();
     }
 
@@ -37,7 +36,7 @@ public class Watering_Can_Photo extends Photo {
      * @methodtype constructor
      */
 
-    public Watering_Can_Photo(PhotoId id){
+    public WateringCanPhoto(PhotoId id){
         super(id);
     }
 
@@ -45,7 +44,7 @@ public class Watering_Can_Photo extends Photo {
      * @methodtype constructor
      */
 
-    public Watering_Can_Photo(Color color){
+    public WateringCanPhoto(Color color){
         super();
         this.color = color;
     }
@@ -55,7 +54,7 @@ public class Watering_Can_Photo extends Photo {
      * @methodtype constructor
      */
 
-    public Watering_Can_Photo(ResultSet rset) throws SQLException {
+    public WateringCanPhoto(ResultSet rset) throws SQLException {
         super(rset);
     }
 
@@ -77,7 +76,7 @@ public class Watering_Can_Photo extends Photo {
 
     }
 
-    public Watering_Can_Photo_Manager getManager(){
+    public WateringCanPhotoManager getManager(){
         return manager;
     }
 

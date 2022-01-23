@@ -12,20 +12,20 @@ import java.sql.SQLException;
                 "Concrete Factory"
         }
 )
-public class Watering_Can_Photo_Factory extends PhotoFactory {
+public class WateringCanPhotoFactory extends PhotoFactory {
 
-    private static Watering_Can_Photo_Factory instance = null;
+    private static WateringCanPhotoFactory instance = null;
 
-    public static synchronized Watering_Can_Photo_Factory getInstance() {
+    public static synchronized WateringCanPhotoFactory getInstance() {
         if (instance == null){
             SysLog.logSysInfo("setting generic Watering_Can_Photo_Factory");
-            setInstance(new Watering_Can_Photo_Factory());
+            setInstance(new WateringCanPhotoFactory());
         }
 
         return instance;
     }
 
-    protected static synchronized void setInstance(Watering_Can_Photo_Factory watering_can_photo_factory) {
+    protected static synchronized void setInstance(WateringCanPhotoFactory watering_can_photo_factory) {
         if (instance != null) {
             throw new IllegalStateException("There is already an instance");
         }
@@ -34,20 +34,20 @@ public class Watering_Can_Photo_Factory extends PhotoFactory {
 
     public static void initialize() { getInstance(); }
 
-    protected Watering_Can_Photo_Factory() {
+    protected WateringCanPhotoFactory() {
         // nothing to do
     }
 
-    public Watering_Can_Photo createWateringCanPhoto() {
-        return new Watering_Can_Photo();
+    public WateringCanPhoto createWateringCanPhoto() {
+        return new WateringCanPhoto();
     }
 
-    public Watering_Can_Photo createWateringCanPhoto(PhotoId id){
+    public WateringCanPhoto createWateringCanPhoto(PhotoId id){
         if (id == null) throw new IllegalArgumentException("id should not be null");
-        return new Watering_Can_Photo(id);
+        return new WateringCanPhoto(id);
     }
 
-    public Watering_Can_Photo createWateringCanPhoto(ResultSet resultSet) throws SQLException {
-        return new Watering_Can_Photo(resultSet);
+    public WateringCanPhoto createWateringCanPhoto(ResultSet resultSet) throws SQLException {
+        return new WateringCanPhoto(resultSet);
     }
 }

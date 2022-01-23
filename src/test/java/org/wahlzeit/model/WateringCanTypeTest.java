@@ -7,51 +7,51 @@ import static org.junit.Assert.*;
 public class WateringCanTypeTest {
 
     @Test
-    public void testWateringCanType() {
+    public void testWateringCanTypeMethods() {
 
-        Watering_Can_Type big_cans = new Watering_Can_Type("big cans");
-        Watering_Can_Type small_cans = new Watering_Can_Type("small cans");
+        WateringCanType bigCans = new WateringCanType("big cans");
+        WateringCanType smallCans = new WateringCanType("small cans");
 
-        Watering_Can_Type red_cans = new Watering_Can_Type("red cans");
-        Watering_Can_Type blue_cans = new Watering_Can_Type("blue cans");
+        WateringCanType redCans = new WateringCanType("red cans");
+        WateringCanType blueCans = new WateringCanType("blue cans");
 
-        blue_cans.setSuperType(big_cans);
+        blueCans.setSuperType(bigCans);
 
-        big_cans.setCapacity(63);
-        Watering_Can gustav_the_can = big_cans.createInstance();
+        bigCans.setCapacity(63);
+        WateringCan gustavTheCan = bigCans.createInstance();
 
-        small_cans.addSubType(red_cans);
+        smallCans.addSubType(redCans);
 
-        Watering_Can anne_the_can = red_cans.createInstance();
+        WateringCan anneTheCan = redCans.createInstance();
 
-        assertTrue(red_cans.isSubType());
-        assertFalse(big_cans.isSubType());
-        assertFalse(small_cans.isSubType());
+        assertFalse(redCans.isSubType(smallCans));
+        assertFalse(bigCans.isSubType(smallCans));
+        assertTrue(smallCans.isSubType(redCans));
 
-        assertFalse(small_cans.hasInstance(gustav_the_can));
-        assertTrue(red_cans.hasInstance(anne_the_can));
+        assertFalse(smallCans.hasInstance(gustavTheCan));
+        assertTrue(redCans.hasInstance(anneTheCan));
 
-        assertEquals(big_cans.getCapacity(), 63);
-        assertEquals(0, gustav_the_can.getId());
-        assertEquals(1, anne_the_can.getId());
+        assertEquals(bigCans.getCapacity(), 63);
+        assertEquals(0, gustavTheCan.getId());
+        assertEquals(1, anneTheCan.getId());
 
-        assertEquals(blue_cans.getSuperType(), big_cans);
+        assertEquals(blueCans.getSuperType(), bigCans);
 
     }
     @Test
-    public void testManager() {
+    public void testWateringCanManagerMethods() {
 
-        Watering_Can_Manager manager = Watering_Can_Manager.getInstance();
+        WateringCanManager manager = WateringCanManager.getInstance();
 
-        Watering_Can klaus_the_can = manager.createWaterinteringCan("middle cans");
-        Watering_Can elsa_the_can = manager.createWaterinteringCan("middle cans");
+        WateringCan klausTheCan = manager.createWateringCan("middle cans");
+        WateringCan elsaTheCan = manager.createWateringCan("middle cans");
 
-        Watering_Can_Type type1 = elsa_the_can.getWatering_Can_Type();
-        Watering_Can_Type type2 = manager.getWateringCanType("middle cans");
+        WateringCanType type1 = elsaTheCan.getWatering_Can_Type();
+        WateringCanType type2 = manager.getWateringCanType("middle cans");
 
         assertEquals(type1, type2);
-        assertSame(klaus_the_can.getWatering_Can_Type(), elsa_the_can.getWatering_Can_Type());
-        assertNotEquals(klaus_the_can.getId(), elsa_the_can.getId());
+        assertSame(klausTheCan.getWatering_Can_Type(), elsaTheCan.getWatering_Can_Type());
+        assertNotEquals(klausTheCan.getId(), elsaTheCan.getId());
     }
 
 }

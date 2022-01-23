@@ -32,7 +32,7 @@ public abstract class ModelMain extends AbstractMain {
  		loadGlobals();
 
 		PhotoFactory.initialize();
-		Watering_Can_Photo_Factory.initialize();
+		WateringCanPhotoFactory.initialize();
 	}
 	
 	/**
@@ -88,7 +88,7 @@ public abstract class ModelMain extends AbstractMain {
 
 		File[] photoFiles = photoDirFile.listFiles(photoFileFilter);
 		for (int i = 0; i < photoFiles.length; i++) {
-			Watering_Can_Photo newPhoto = (Watering_Can_Photo) photoManager.createPhoto(photoFiles[i]);
+			WateringCanPhoto newPhoto = (WateringCanPhoto) photoManager.createPhoto(photoFiles[i]);
 			user.addPhoto(newPhoto);
 		}
 	}

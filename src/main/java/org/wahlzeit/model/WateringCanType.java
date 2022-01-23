@@ -2,7 +2,6 @@ package org.wahlzeit.model;
 
 import org.wahlzeit.services.DataObject;
 
-import java.awt.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,22 +9,22 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Watering_Can_Type extends DataObject {
+public class WateringCanType extends DataObject {
 
-    protected Watering_Can_Type superType = null;
-    protected Set<Watering_Can_Type> subTypes = new HashSet<Watering_Can_Type>();
+    protected WateringCanType superType = null;
+    protected Set<WateringCanType> subTypes = new HashSet<WateringCanType>();
     protected String typeName;
     protected int capacity = 0;
 
-    public Watering_Can_Type(String name) {
+    public WateringCanType(String name) {
         this.typeName = name;
     }
 
-    public Watering_Can_Type getSuperType() {
+    public WateringCanType getSuperType() {
         return superType;
     }
 
-    public void setSuperType(Watering_Can_Type watering_can_type) {
+    public void setSuperType(WateringCanType watering_can_type) {
         superType = watering_can_type;
     }
 
@@ -33,16 +32,26 @@ public class Watering_Can_Type extends DataObject {
         return typeName;
     }
 
-    public Iterator<Watering_Can_Type> getSubTypeIterator() {
+    public Iterator<WateringCanType> getSubTypeIterator() {
         return subTypes.iterator();
     }
 
-    public Watering_Can createInstance() {
-        return new Watering_Can(this);
+    public WateringCan createInstance() {
+        return new WateringCan(this);
     }
 
-    public boolean isSubType() {
-        return superType != null;
+    public boolean isSubType(WateringCanType wateringCanType) {
+        if (subTypes.contains(wateringCanType)){
+            return true;
+        }
+        else{
+            for(WateringCanType c : subTypes){
+                if(c.isSubType(wateringCanType)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public int getCapacity(){
@@ -53,20 +62,23 @@ public class Watering_Can_Type extends DataObject {
         this.capacity = capacity;
     }
 
-    public void addSubType(Watering_Can_Type watering_can_type) {
-        assert (watering_can_type != null) : "my watering can type is null";
+    public void addSubType(WateringCanType watering_can_type) {
+        if (watering_can_type == null) {
+            throw new IllegalArgumentException("my watering can type is null");
+        }
         watering_can_type.setSuperType(this);
         subTypes.add(watering_can_type);
     }
 
-    public boolean hasInstance(Watering_Can watering_can) {
-        assert (watering_can != null) : "my watering can is null";
-
+    public boolean hasInstance(WateringCan watering_can) {
+        if (watering_can == null) {
+            throw new IllegalArgumentException("my watering can is null");
+        }
         if (watering_can.getWatering_Can_Type() == this){
             return true;
         }
 
-        for (Watering_Can_Type type : subTypes) {
+        for (WateringCanType type : subTypes) {
             if (type.hasInstance(watering_can)) {
                 return true;
             }

@@ -65,7 +65,7 @@ public class PhotoCase extends Case {
 	 */
 	public void readFrom(ResultSet rset) throws SQLException {
 		id = new CaseId(rset.getInt("id"));
-		photo = Watering_Can_Photo_Manager.getPhoto(PhotoId.getIdFromInt(rset.getInt("photo")));
+		photo = WateringCanPhotoManager.getPhoto(PhotoId.getIdFromInt(rset.getInt("photo")));
 		createdOn = rset.getLong("creation_time");
 		
 		flagger = rset.getString("flagger");

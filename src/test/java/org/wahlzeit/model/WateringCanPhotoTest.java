@@ -16,8 +16,8 @@ import static org.mockito.Mockito.*;
 
 public class WateringCanPhotoTest {
 
-    private Watering_Can_Photo wcphoto1;
-    private Watering_Can_Photo wcphoto2;
+    private WateringCanPhoto wcphoto1;
+    private WateringCanPhoto wcphoto2;
 
     @Mock
     private ResultSet resultSetMock;
@@ -27,18 +27,18 @@ public class WateringCanPhotoTest {
 
         resultSetMock = Mockito.mock(ResultSet.class);
         PhotoId testid = new PhotoId(1);
-        wcphoto1 = Watering_Can_Photo_Factory.getInstance().createWateringCanPhoto();
-        wcphoto2 = Watering_Can_Photo_Factory.getInstance().createWateringCanPhoto(testid);
+        wcphoto1 = WateringCanPhotoFactory.getInstance().createWateringCanPhoto();
+        wcphoto2 = WateringCanPhotoFactory.getInstance().createWateringCanPhoto(testid);
 
     }
 
-    private Watering_Can_Photo initPhotoMock(final ResultSet rset) throws SQLException {
+    private WateringCanPhoto initPhotoMock(final ResultSet rset) throws SQLException {
 
         when(rset.getString("owner_email_address")).thenReturn("max.mustermann@gmail.com");
         when(rset.getString("owner_home_page")).thenReturn("http://wahlzeit.org/yx32ebyn");
         when(rset.getString(eq("color"))).thenReturn("green");
 
-        return new Watering_Can_Photo(rset);
+        return new WateringCanPhoto(rset);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class WateringCanPhotoTest {
     @Test
     public void testWateringCanPhoto() throws SQLException, CoordinateException{
 
-        Watering_Can_Photo wcphoto3 = initPhotoMock(resultSetMock);
+        WateringCanPhoto wcphoto3 = initPhotoMock(resultSetMock);
         CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getCartesianCoordinateObject(4.0, 2.0, 0.0);
         wcphoto3.location = new Location(cartesianCoordinate);
 

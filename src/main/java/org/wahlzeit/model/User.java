@@ -202,7 +202,7 @@ public class User extends Client implements Persistent {
 		status = UserStatus.getFromInt(rset.getInt("status"));
 		confirmationCode = rset.getLong("confirmation_code");
 		photos = PhotoManager.getInstance().findPhotosByOwner(name);
-		userPhoto = Watering_Can_Photo_Manager.getPhoto(PhotoId.getIdFromInt(rset.getInt("photo")));
+		userPhoto = WateringCanPhotoManager.getPhoto(PhotoId.getIdFromInt(rset.getInt("photo")));
 		creationTime = rset.getLong("creation_time");
 	}
 	
@@ -448,7 +448,7 @@ public class User extends Client implements Persistent {
 	/**
 	 * 
 	 */
-	public void addPhoto(Watering_Can_Photo newPhoto) {
+	public void addPhoto(WateringCanPhoto newPhoto) {
 		photos.add(newPhoto);
 		incWriteCount();
 
