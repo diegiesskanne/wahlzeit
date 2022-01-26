@@ -54,12 +54,8 @@ public class WateringCanPhotoTest {
         CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getCartesianCoordinateObject(4.0, 2.0, 0.0);
         wcphoto3.location = new Location(cartesianCoordinate);
 
-        String testcolor = "blue";
-        wcphoto3.setColor(testcolor);
-
         wcphoto3.location.writeOn(resultSetMock);
 
-        assertEquals(wcphoto3.getColor(), Color.blue);
         verify(resultSetMock, Mockito.times(1)).updateDouble("coordinate_x", wcphoto3.location.getCoordinate().asCartesianCoordinate().getX());
         verify(resultSetMock, Mockito.times(1)).updateDouble("coordinate_y", wcphoto3.location.getCoordinate().asCartesianCoordinate().getY());
         verify(resultSetMock, Mockito.times(1)).updateDouble("coordinate_z", wcphoto3.location.getCoordinate().asCartesianCoordinate().getZ());
