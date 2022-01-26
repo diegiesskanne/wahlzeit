@@ -452,7 +452,6 @@ public class User extends Client implements Persistent {
 		photos.add(newPhoto);
 		incWriteCount();
 
-		newPhoto.setColor("black");
 		newPhoto.setOwnerId(id);
 		newPhoto.setOwnerName(name);
 		newPhoto.setOwnerNotifyAboutPraise(notifyAboutPraise);
